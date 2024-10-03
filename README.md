@@ -49,7 +49,7 @@ Programmers Web Full Stack 4기 b반 `푸드매니저`입니다.
   </div>
 
 - Github를 통해 프로젝트 코드 공유 및 버전 관리
-- Git Flow 전략으로 main, develop, feature 브랜치별 작업 / 관리
+- Trunk-Based 전략으로 모든 변경 사항을 main 브랜치에 병합
 
   </br>
   </br>
