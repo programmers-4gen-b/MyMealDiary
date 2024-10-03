@@ -53,7 +53,6 @@ Programmers Web Full Stack 4기 b반 `푸드매니저`입니다.
 
   </br>
   </br>
-  </br>
 
 ## 5. 개발 환경
 
@@ -67,6 +66,7 @@ Programmers Web Full Stack 4기 b반 `푸드매니저`입니다.
 </div>
 
 <br>
+</br>
 
 ## 6. 컨벤션 
 ### Commit Convention
