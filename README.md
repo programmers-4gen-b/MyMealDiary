@@ -60,11 +60,10 @@ Programmers Web Full Stack 4기 b반 `푸드매니저`입니다.
 ### 🛠 기술 스택
 
 <div>
+  <img src="https://img.shields.io/badge/HTML5-red?style=for-the-badge&logo=HTML5&logoColor=white"/>
+  <img src="https://img.shields.io/badge/CSS3-blue?style=for-the-badge&logo=CSS3&logoColor=white"/>
   <img src="https://img.shields.io/badge/React-grey?style=for-the-badge&logo=React&logoColor=61DAFB"/>
-  <img src="https://img.shields.io/badge/javascript-grey?style=for-the-badge&logo=javascript&logoColor=f7df1e" />
-  <img src="https://img.shields.io/badge/React Router-grey?style=for-the-badge&logo=React Router&logoColor=CA4245"/>
-  <img src="https://img.shields.io/badge/Prettier-grey?style=for-the-badge&logo=Prettier&logoColor=F7B93E"/>
-  <img src="https://img.shields.io/badge/ESLint-grey?style=for-the-badge&logo=ESLint&logoColor=4B32C3"/>
+  <img src="https://img.shields.io/badge/Node.js-green?style=for-the-badge&logo=Node.js&logoColor=white">
 </div>
 
 <br>
