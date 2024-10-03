@@ -9,7 +9,7 @@
 
 ## 2. 팀 소개
 
-안녕하세요, 저희는 Programmers Web Full Stack 4기 b반 `푸드매니저`입니다.
+Programmers Web Full Stack 4기 b반 `푸드매니저`입니다.
 
 </br>
 
