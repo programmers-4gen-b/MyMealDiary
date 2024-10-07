@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/5a9aaac7-9033-4248-a7bb-0ee41a7894aa)# MyMealDiary
+# MyMealDiary
 
 ## 1. 서비스 소개
 
