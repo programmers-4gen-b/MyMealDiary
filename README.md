@@ -1,4 +1,4 @@
-# MyMealDiary
+![image](https://github.com/user-attachments/assets/5a9aaac7-9033-4248-a7bb-0ee41a7894aa)# MyMealDiary
 
 ## 1. 서비스 소개
 
@@ -16,11 +16,11 @@ Programmers Web Full Stack 4기 b반 `푸드매니저`입니다.
 <table>
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com/leejjorang"><img src="" width="100px;" alt=""/><br /><sub><b>FE 이 현</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/ces1225"><img src="" width="100px;" alt=""/><br /><sub><b>FE 최은석</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/junho2408"><img src="" width="100px;" alt=""/><br /><sub><b>FE 김준호</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/nowrobin"><img src="" width="100px;" alt=""/><br /><sub><b>BE 한정욱</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/vedivero"><img src="" width="100px;" alt=""/><br /><sub><b>BE 이현석</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/leejjorang"><img src="https://avatars.githubusercontent.com/u/109894687?v=4" width="100px;" alt=""/><br /><sub><b>FE 이 현</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/ces1225"><img src="https://avatars.githubusercontent.com/u/176968665?v=4" width="100px;" alt=""/><br /><sub><b>FE 최은석</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/junho2408"><img src="https://avatars.githubusercontent.com/u/178156996?v=4" width="100px;" alt=""/><br /><sub><b>FE 김준호</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/nowrobin"><img src="https://avatars.githubusercontent.com/u/178156996?v=4" width="100px;" alt=""/><br /><sub><b>BE 한정욱</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/vedivero"><img src="https://avatars.githubusercontent.com/u/75677589?v=4" width="100px;" alt=""/><br /><sub><b>BE 이현석</b></sub></a><br /></td>
      <tr/>
   </tbody>
 </table>
