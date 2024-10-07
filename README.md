@@ -16,10 +16,11 @@ Programmers Web Full Stack 4기 b반 `푸드매니저`입니다.
 <table>
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com/"><img src="" width="100px;" alt=""/><br /><sub><b>FE 이 현</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/"><img src="" width="100px;" alt=""/><br /><sub><b>FE 최은석</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/"><img src="" width="100px;" alt=""/><br /><sub><b>BE 한정욱</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/"><img src="" width="100px;" alt=""/><br /><sub><b>BE 이현석</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/leejjorang"><img src="" width="100px;" alt=""/><br /><sub><b>FE 이 현</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/ces1225"><img src="" width="100px;" alt=""/><br /><sub><b>FE 최은석</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/junho2408"><img src="" width="100px;" alt=""/><br /><sub><b>FE 김준호</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/nowrobin"><img src="" width="100px;" alt=""/><br /><sub><b>BE 한정욱</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/vedivero"><img src="" width="100px;" alt=""/><br /><sub><b>BE 이현석</b></sub></a><br /></td>
      <tr/>
   </tbody>
 </table>
