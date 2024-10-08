@@ -1,0 +1,7 @@
+.input-body {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    gap: 2rem;
+    margin-bottom: 10px;
+}
