@@ -13,8 +13,6 @@ const findFoodRouter = require('./route/processedFood/findFood');
 app.use('/findFood', findFoodRouter);
 
 const { createClient } = require('@supabase/supabase-js');
-const supabaseUrl = process.env.SUPABASE_URL;  // .env 파일에서 가져옴
-const supabaseKey = process.env.SUPABASE_KEY;  // .env 파일에서 가져옴
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 app.get('/test', async (req, res) => {
