@@ -1,9 +1,15 @@
 import "./App.css";
+import AddFood from "./AddFood.js";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-      <h3>test</h3>
+      <Router>
+        <Routes>
+          <Route path="/" element={<AddFood />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
