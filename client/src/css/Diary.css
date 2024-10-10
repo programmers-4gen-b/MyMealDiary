@@ -75,14 +75,14 @@
     margin: 3px 0; /* 줄과 항목 간의 간격 */
 }
 
-.dinner-details {
+.meal-option-details {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     margin: 0 10px;
 }
 
-.dinner-details span {
+.meal-option-details span {
     display: block;
     margin-bottom: 5px;
 }

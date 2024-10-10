@@ -1,3 +1,4 @@
+import "../css/common.css"
 import React from "react";
 import { useState, useEffect } from "react";
 import _ from "lodash";
@@ -58,7 +59,7 @@ function AddFood() {
   console.log(results);
 
   return (
-    <div>
+    <div className="app-container">
       <input
         type="text"
         value={query}
