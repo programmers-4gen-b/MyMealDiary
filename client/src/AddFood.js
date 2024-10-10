@@ -20,30 +20,30 @@ function AddFood() {
   const [selectedFood, setSelectedFood] = useState(null);
 
   //디바운싱하여 api 호출
-  //   const debouncedSearch = _.debounce((searchTerm) => {
-  //     fetch(`/api/food?search=${searchTerm}`)
-  //       .then((response) => response.json())
-  //       .then((data) => setResults(data))
-  //       .catch((err) => console.error(err));
-  //   }, 300);
+  const debouncedSearch = _.debounce((searchTerm) => {
+    fetch(`http://localhost:4545/findFood?foodNm=${searchTerm}`)
+      .then((response) => response.json())
+      .then((data) => setResults(data))
+      .catch((err) => console.error(err));
+  }, 300);
 
-  //   useEffect(() => {
-  //     if (query) {
-  //       debouncedSearch(query);
-  //     }
-  //   }, [query]);
-
-  //더미리스트 사용 임시코드
   useEffect(() => {
     if (query) {
-      const filteredResults = dummyFoodList.filter((food) =>
-        food.foodNm.includes(query)
-      );
-      setResults(filteredResults);
-    } else {
-      setResults([]);
+      debouncedSearch(query);
     }
   }, [query]);
+
+  //더미리스트 사용 임시코드
+  // useEffect(() => {
+  //   if (query) {
+  //     const filteredResults = dummyFoodList.filter((food) =>
+  //       food.foodNm.includes(query)
+  //     );
+  //     setResults(filteredResults);
+  //   } else {
+  //     setResults([]);
+  //   }
+  // }, [query]);
 
   const handleItemClick = (food) => {
     setSelectedFood(food);
@@ -55,6 +55,8 @@ function AddFood() {
     setSelectedFood(null);
   };
 
+  console.log(results);
+
   return (
     <div>
       <input
@@ -63,13 +65,13 @@ function AddFood() {
         onChange={(e) => setQuery(e.target.value)}
         placeholder="음식을 입력하세요"
       />
-      <ul>
+      {/* <ul>
         {results.map((food) => (
           <li key={food.foodCd} onClick={() => handleItemClick(food)}>
             {food.foodNm}
           </li>
         ))}
-      </ul>
+      </ul> */}
 
       <FoodModal
         isOpen={isModalOpen}
