@@ -9,9 +9,9 @@ app.listen(process.env.PORT, () => {
 });
 
 const processedFood = require('./route/processedFood/processedFood');
-
+const food = require('./route/food/index')
 app.use('/processedFood', processedFood);
-
+app.use('/food',food)
 const { createClient } = require('@supabase/supabase-js');
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
