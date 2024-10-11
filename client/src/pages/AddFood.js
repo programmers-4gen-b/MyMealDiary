@@ -1,10 +1,12 @@
 import "../css/common.css";
 import React from "react";
 import { useState, useEffect } from "react";
-import _ from "lodash";
 import FoodModal from "./FoodModal.js";
 
+//mealType, isFoodExist 필요
 function AddFood() {
+  const defaultMealType = 1; //임시
+  const isFoodExist = false;
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,6 +58,8 @@ function AddFood() {
         isOpen={isModalOpen}
         onClose={closeModal}
         content={selectedFood}
+        defaultMealType={defaultMealType}
+        isFoodExist={isFoodExist}
       />
     </div>
   );
