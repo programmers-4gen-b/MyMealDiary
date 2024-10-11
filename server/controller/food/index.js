@@ -29,8 +29,9 @@ const findFood= async (req, res) => {
       .from('food')
       .select('*').eq('foodnm', foodNm)
       if(error){
-        res.status(500).json({error})
-      }  res.json({food})
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error})
+      }  
+      res.json({food})
     } catch (error) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         message: '서버 에러가 발생했습니다.',
