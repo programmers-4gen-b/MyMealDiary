@@ -4,9 +4,11 @@ router.use(express.json());
 const {
    findProcessedFood,
    saveProcessedFood,
+   findProcessedFoodDetail,
 } = require('../../controller/processdFood/ProcessedFoodController');
 
-router.get('/', findProcessedFood);
+router.get('/list', findProcessedFood);
+router.get('/list/detail', findProcessedFoodDetail);
 router.post('/', saveProcessedFood);
 
 module.exports = router;

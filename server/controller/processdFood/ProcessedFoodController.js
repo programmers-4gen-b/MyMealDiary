@@ -12,14 +12,38 @@ const findProcessedFood = async (req, res) => {
       let foodnm = req.query.foodNm;
       const { data: processedfood, error } = await supabase
          .from('processedfood')
-         .select('*')
-         .like('foodnm', `%${foodnm}%`); // foodnm에 포함된 문자열 검색
+         .select('foodnm, foodcd')
+         .like('foodnm', `%${foodnm}%`);
 
       if (error) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+      if (processedfood.length === 0) {
+         return res.status(StatusCodes.NOT_FOUND).json({ message: '일치하는 데이터가 없습니다.' });
+      }
 
       res.status(StatusCodes.OK).json({ processedfood });
    } catch (error) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: '가공식품 조회 에러 ', error });
+   }
+};
+
+const findProcessedFoodDetail = async (req, res) => {
+   try {
+      let foodnm = req.query.foodNm;
+      let foodcd = req.query.foodcd;
+      const { data: processedfood, error } = await supabase
+         .from('processedfood')
+         .select('*')
+         .eq('foodnm', foodnm)
+         .eq('foodcd', foodcd);
+
+      if (error) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+      if (processedfood.length === 0) {
+         return res.status(StatusCodes.NOT_FOUND).json({ message: '일치하는 데이터가 없습니다.' });
+      }
+
+      res.status(StatusCodes.OK).json({ processedfood });
+   } catch (error) {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: '가공식품 상세 조회 에러 ', error });
    }
 };
 
@@ -52,4 +76,5 @@ const saveProcessedFood = async (req, res) => {
 module.exports = {
    findProcessedFood,
    saveProcessedFood,
+   findProcessedFoodDetail,
 };
