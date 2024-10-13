@@ -20,6 +20,10 @@ const Goal = () => {
         navigate('/goal');
     }
 
+    const navigateToLogin = () => {
+        navigate('/login');
+    }
+
     const [formData, setFormData] = useState({
         weight: "",
         height: "",
@@ -85,27 +89,29 @@ const Goal = () => {
     };
 
     return (
-        <div className="app-container">Goal page
+        <div className="app-container">
             <h2>목표</h2>
 
             <div className="input-body">
-                <span>나이:</span>
+                <span>나이 : </span>
                 <input
                     type="number"
                     name="age"
                     value={formData.age}
                     onChange={handleInputChange}
                 />
+                <span>세</span>
             </div>
 
             <div className="input-body">
-                <span>  키:</span>
+                <span>키:</span>
                 <input
                     type="number"
                     name="height"
                     value={formData.height}
                     onChange={handleInputChange}
                 />
+                <span>cm</span>
             </div>
 
             <div className="input-body">
@@ -116,6 +122,7 @@ const Goal = () => {
                     value={formData.weight}
                     onChange={handleInputChange}
                 />
+                <span>kg</span>
             </div>
 
             <div className="input-body">
@@ -158,6 +165,7 @@ const Goal = () => {
                 <button className="bottom-button" onClick={navigateToDiary}>다이어리</button>
                 <button className="bottom-button" onClick={navigateToReport}>리포트</button>
                 <button className="bottom-button" onClick={navigateToGoal}>목표</button>
+                <button className="bottom-button" onClick={navigateToLogin}>로그인</button>
             </div>
         </div>
     );
