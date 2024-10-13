@@ -14,9 +14,9 @@ function AddFood() {
 
   const handleSearch = () => {
     if (query) {
-      fetch(`http://localhost:4545/processedFood?foodNm=${query}`)
+      fetch(`http://localhost:4545/processedFood/list?foodNm=${query}`)
         .then((response) => response.json())
-        .then((data) => setResults(data))
+        .then((data) => setResults(data.processedfood))
         .catch((err) => console.error(err));
     } else {
       setResults([]);
@@ -43,9 +43,9 @@ function AddFood() {
       />
       <button onClick={handleSearch}>검색</button>
       <ul>
-        {results.processedfood && results.processedfood.length > 0 && (
+        {results && results.length > 0 && (
           <ul>
-            {results.processedfood.slice(0, 20).map((food) => (
+            {results.slice(0, 20).map((food) => (
               <li key={food.foodcd} onClick={() => handleItemClick(food)}>
                 {food.foodnm}
               </li>
