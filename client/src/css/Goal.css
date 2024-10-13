@@ -1,15 +1,16 @@
 .input-body {
   display: flex;
-  align-items: center; /* 요소를 수직 중앙 정렬 */
-  justify-content: flex-start; /* 요소를 왼쪽 정렬 */
-  gap: 2rem; /* 요소 간의 간격 */
+  align-items: center;
+  justify-content: flex-start; 
+  gap: 2rem; 
   margin-bottom: 10px;
-  position: relative; /* 드롭다운 배치를 위한 상대적 위치 */
+  position: relative;
+  font-weight: bold;
 }
 
 .options {
-  position: absolute; /* 드롭다운이 부모 기준으로 절대 위치 */
-  top: 100%; /* 부모 요소 바로 아래에 위치 */
+  position: absolute; 
+  top: 100%; 
   left: 0;
   background-color: white;
   border: 1px solid #ccc;
@@ -19,10 +20,11 @@
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
+  border: none;
 }
 
 .options.show {
-  max-height: 300px; /* 드롭다운이 펼쳐질 때 높이 */
+  max-height: 300px; 
 }
 
 .options button {
@@ -37,3 +39,27 @@
 .options button:hover {
   background-color: #f0f0f0;
 }
+
+.result_button {
+  display: flex; 
+  justify-content: center; 
+  gap: 10px; 
+  margin-top: 20px;
+}
+
+.bmr-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom : 10px;
+  transition: background-color 0.3s, transform 0.2s;
+} 
+.bmr-button:hover {
+  background-color: #218838;
+      cursor: pointer;
+}
+

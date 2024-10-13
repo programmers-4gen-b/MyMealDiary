@@ -79,6 +79,10 @@ const Diary = () => {
   const navigateToAddFood = () => {
     navigate('/addFood');
   }
+  const navigateToLogin = () => {
+    navigate('/login');
+  }
+
 
   const [remainingCalories, setRemainingCalories] = useState(10000);
   const [consumedCalories, setConsumedCalories] = useState(0);
@@ -230,6 +234,7 @@ const Diary = () => {
         <button className="bottom-button" onClick={navigateToDiary}>다이어리</button>
         <button className="bottom-button" onClick={navigateToReport}>리포트</button>
         <button className="bottom-button" onClick={navigateToGoal}>목표</button>
+        <button className="bottom-button" onClick={navigateToLogin}>로그인</button>
       </div>
     </div>
   );
