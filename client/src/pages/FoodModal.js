@@ -36,13 +36,20 @@ function FoodModal({ isOpen, onClose, content, defaultMealType, isFoodExist }) {
   };
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && defaultMealType === 4) {
       fetch(
         `http://localhost:4545/processedFood/list/detail?foodNm=${content.foodnm}&foodcd=${content.foodcd}`
       )
         .then((response) => response.json())
         .then((data) => {
           setFoodDetail(data.processedfood[0]);
+        })
+        .catch((err) => console.error(err));
+    } else if (isOpen && !(defaultMealType === 4)) {
+      fetch(`http://localhost:4545/food/?foodNm=${content.foodnm}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setFoodDetail(data.food[0]);
         })
         .catch((err) => console.error(err));
     }
@@ -88,6 +95,9 @@ function FoodModal({ isOpen, onClose, content, defaultMealType, isFoodExist }) {
   useEffect(() => {
     calculateNutrients();
   }, [serving, foodDetail]);
+
+  const handleSave = () => {};
+  const handleDelete = () => {};
 
   const handleClose = () => {
     setQuantity(1);
@@ -135,6 +145,8 @@ function FoodModal({ isOpen, onClose, content, defaultMealType, isFoodExist }) {
               <option value="4">간식</option>
             </select>
           </div>
+          <button onClick={handleSave}>저장</button>
+          {isFoodExist && <button onClick={handleDelete}>삭제</button>}
           <h4>영양정보</h4>
           <div>
             <p>서빙 사이즈: {serving}g</p>

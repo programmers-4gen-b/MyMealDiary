@@ -2,6 +2,7 @@ import "../css/common.css";
 import React from "react";
 import { useState, useEffect } from "react";
 import FoodModal from "./FoodModal.js";
+import { useNavigate } from "react-router-dom";
 
 //mealType, isFoodExist 필요
 function AddFood() {
@@ -11,12 +12,28 @@ function AddFood() {
   const [results, setResults] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFood, setSelectedFood] = useState(null);
+  const navigate = useNavigate();
 
-  const handleSearch = () => {
+  const handleClose = () => {
+    navigate("/");
+  };
+
+  const handleSearchProcessed = () => {
     if (query) {
       fetch(`http://localhost:4545/processedFood/list?foodNm=${query}`)
         .then((response) => response.json())
         .then((data) => setResults(data.processedfood))
+        .catch((err) => console.error(err));
+    } else {
+      setResults([]);
+    }
+  };
+
+  const handleSerchFood = () => {
+    if (query) {
+      fetch(`http://localhost:4545/food/List?foodNm=${query}`)
+        .then((response) => response.json())
+        .then((data) => setResults(data.food))
         .catch((err) => console.error(err));
     } else {
       setResults([]);
@@ -35,13 +52,18 @@ function AddFood() {
 
   return (
     <div className="app-container">
+      <button onClick={handleClose}>Close</button>
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="음식을 입력하세요"
       />
-      <button onClick={handleSearch}>검색</button>
+      {defaultMealType === 4 ? (
+        <button onClick={handleSearchProcessed}>검색</button>
+      ) : (
+        <button onClick={handleSerchFood}>검색</button>
+      )}
       <ul>
         {results && results.length > 0 && (
           <ul>
