@@ -9,17 +9,9 @@ app.listen(process.env.PORT, () => {
 });
 
 const processedFood = require('./route/processedFood/processedFood');
-const food = require('./route/food/index')
-app.use('/processedFood', processedFood);
-app.use('/food',food)
-const { createClient } = require('@supabase/supabase-js');
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+const food = require('./route/food/index');
+const user = require('./route/user/user');
 
-app.get('/test', async (req, res) => {
-   const { data: users, error: err1 } = await supabase.from('users').select('*');
-   const { data: meal_log, error: err2 } = await supabase.from('meal_log').select('*');
-   if (err1) {
-      return res.status(500).json({ error: error.message });
-   }
-   res.json({ users, meal_log });
-});
+app.use('/processedFood', processedFood);
+app.use('/food', food);
+app.use('/user', user);
