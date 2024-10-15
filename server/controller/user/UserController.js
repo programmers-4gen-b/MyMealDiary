@@ -10,9 +10,13 @@ const crypto = require('crypto');
 
 const login = async (req, res) => {
    try {
-      let { user_id, password } = req.body;
+      let { user_name, password } = req.body;
 
-      const { data: user, error } = await supabase.from('users').select('*').eq('user_id', user_id).single();
+      const { data: user, error } = await supabase
+         .from('users')
+         .select('*')
+         .eq('user_name', user_name)
+         .single();
 
       if (error || !user) {
          console.log('사용자를 찾을 수 없습니다.');
@@ -28,12 +32,12 @@ const login = async (req, res) => {
 
       const token = jwt.sign(
          {
-            user_id: user.user_id,
+            user_name: user.user_name,
          },
          process.env.PRIVATE_KEY,
          {
             expiresIn: '30m',
-            issuer: user_id,
+            issuer: user_name,
          },
       );
 
@@ -51,10 +55,7 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
    try {
-      const { user_id, password } = req.body;
-
-      console.log(`user_id: ${user_id}`);
-      console.log(`password: ${password}`);
+      const { user_name, password } = req.body;
 
       const salt = crypto.randomBytes(64).toString('base64');
       const hashPassword = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('base64');
@@ -62,7 +63,7 @@ const register = async (req, res) => {
       const { data: existingUser, error: findError } = await supabase
          .from('users')
          .select('*')
-         .eq('user_id', user_id);
+         .eq('user_name', user_name);
 
       if (findError) {
          return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: findError.message });
@@ -73,7 +74,7 @@ const register = async (req, res) => {
 
       const { data: newUser, error: insertError } = await supabase
          .from('users')
-         .insert([{ user_id: user_id, password: hashPassword, salt: salt }]);
+         .insert([{ user_name: user_name, password: hashPassword, salt: salt }]);
 
       if (insertError) {
          return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: insertError.message });
