@@ -50,31 +50,139 @@ const findProcessedFoodDetail = async (req, res) => {
 const saveProcessedFood = async (req, res) => {
    let { user_id, food_name, calories, protein, fat, carbohydrates, sugar, fiber } = req.body;
 
-   const { data, error } = await supabase
-      .from('meal_log') // 테이블 이름을 'foods'로 가정
-      .insert([
-         {
-            user_id,
-            food_name,
-            calories,
-            protein,
-            fat,
-            carbohydrates,
-            sugar,
-            fiber,
-            meal_date: new Date().toISOString().split('T')[0],
-            meal_time: new Date().toTimeString().split(' ')[0],
-            meal_type: 'dinner',
-         },
-      ]);
+   const { data, error } = await supabase.from('meal_log').insert([
+      {
+         user_id,
+         food_name,
+         calories,
+         protein,
+         fat,
+         carbohydrates,
+         sugar,
+         fiber,
+         meal_date: new Date().toISOString().split('T')[0],
+         meal_time: new Date().toTimeString().split(' ')[0],
+         meal_type: 'dinner',
+      },
+   ]);
    if (error) {
       return res.status(500).json({ error: error.message });
    }
-   res.status(201).json({ message: 'Food saved successfully', data });
+   res.status(201).json({ message: 'Food saved successfully' });
+};
+
+const deleteProcessedFood = async (req, res) => {
+   const { user_id, id } = req.body;
+
+   try {
+      const { data, error } = await supabase.from('meal_log').delete().eq('user_id', user_id).eq('id', id);
+
+      if (error) {
+         console.error('Error deleting data:', error);
+         return res.status(400).json({ error: error.message });
+      }
+
+      res.status(200).json({ message: 'Data deleted successfully' });
+   } catch (error) {
+      console.error('Unexpected error:', err);
+      res.status(500).json({ error: 'Internal server error', message: 'Data deleted failed' });
+   }
+};
+
+const updateProcessedFood = async (req, res) => {
+   const { id } = req.params;
+
+   const {
+      food_name,
+      food_category,
+      serving_size,
+      calories,
+      protein,
+      carbohydrates,
+      fat,
+      sugar,
+      sodium,
+      fiber,
+   } = req.body;
+
+   const updated_at = new Date().toISOString(); // 업데이트된 시간 (ISO 포맷)
+   const meal_date = new Date().toISOString().split('T')[0]; // 현재 날짜만 (YYYY-MM-DD 포맷)
+   const meal_time = new Date().toTimeString().split(' ')[0]; // HH:mm:ss 포맷으로 변환
+
+   try {
+      const { data, error } = await supabase
+         .from('meal_log')
+         .update({
+            meal_date,
+            meal_time,
+            food_name,
+            food_category,
+            serving_size,
+            calories,
+            protein,
+            carbohydrates,
+            fat,
+            sugar,
+            sodium,
+            fiber,
+            updated_at,
+         })
+         .eq('id', id);
+
+      if (error) {
+         console.error('Error updating data:', error);
+         return res.status(400).json({ error: error.message });
+      }
+
+      res.status(200).json({ message: 'Data updated successfully' });
+   } catch (error) {
+      console.error('Unexpected error:', error);
+      res.status(500).json({ error: 'Internal server error', message: 'Data Update failed' });
+   }
+};
+
+const getAllProcessedFoods = async (req, res) => {
+   try {
+      let { user_id, meal_date } = req.body;
+
+      const { data: allProcessedfood, error } = await supabase
+         .from('meal_log')
+         .select('*')
+         .eq('user_id', user_id)
+         .eq('meal_date', meal_date);
+      if (error) {
+         console.error('Error retrieve processed foods:', error);
+         return res.status(400).json({ error: error.message });
+      }
+
+      res.status(StatusCodes.OK).json(allProcessedfood);
+   } catch (error) {
+      console.error('Unexpected error:', error);
+      res.status(500).json({ error: 'Internal server error', message: 'Failed to retrieve processed foods' });
+   }
+};
+
+const getProcessedFoodById = async (req, res) => {
+   try {
+      let { id } = req.params;
+
+      const { data: processedFoodById, error } = await supabase.from('meal_log').select('*').eq('id', id);
+
+      if (error) {
+         console.error('Error retrieve processed foods:', error);
+         return res.status(400).json({ error: error.message });
+      }
+
+      res.status(StatusCodes.OK).json(processedFoodById[0]);
+   } catch (error) {}
 };
 
 module.exports = {
    findProcessedFood,
    saveProcessedFood,
    findProcessedFoodDetail,
+   deleteProcessedFood,
+   updateProcessedFood,
+   getAllProcessedFoods,
+   getProcessedFoodById,
 };
