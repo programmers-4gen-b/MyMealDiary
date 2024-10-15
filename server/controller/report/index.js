@@ -9,10 +9,9 @@ dotenv.config();
 
 //음식 meal 테이블 저장
 const mealStore = async (req, res)=>{
-  let {userId} = req.query
-  let { meal_type} = req.body;
+  let { user_id, meal_type} = req.body;
   const {data, error}= await supabase.from('meal').insert([
-  {  user_id:userId,
+  {  user_id:user_id,
     meal_date:new Date().toISOString().split('T')[0],
     meal_type}
   ])  
@@ -24,8 +23,7 @@ const mealStore = async (req, res)=>{
 
 //meal_log 테이블 저장
 const mealLogStore = async (req, res)=>{
-  let {userId} = req.query
-  let { meal_type, serving_size, foodcd,foodnm} = req.body;
+  let {user_id, meal_type, serving_size, foodcd,foodnm} = req.body;
   const { data: food, error:getError } = await supabase
   .from('food')
   .select('*').eq('foodnm', foodnm).eq('foodcd', foodcd)
@@ -43,7 +41,7 @@ const mealLogStore = async (req, res)=>{
   })
   const {data:meal_log, error:insertError}= await supabase.from('meal_log').insert([
     {
-      user_id:userId,
+      user_id:user_id,
       meal_type:meal_type,
       meal_date: new Date().toISOString().split('T')[0],
       meal_time: new Date().toTimeString().split(' ')[0],
@@ -68,12 +66,12 @@ const mealLogStore = async (req, res)=>{
 
 //조회 기간 영양소 조회
 const calendarLog = async(req,res)=>{ 
-  let {userId} = req.query
+  let {user_id} = req.query
   let {startDate , endDate}= req.body;
   const { data: foodDetail, error:foodError } = await supabase
   .from('meal_log')
   .select('*')
-  .eq('user_id',userId)
+  .eq('user_id',user_id)
   .gte('meal_date', startDate)
   .lte('meal_date', endDate);
 
@@ -81,13 +79,13 @@ const calendarLog = async(req,res)=>{
   // const {data:userDetail, error:userError} = await supabase.from('user').select('')
   const totalNutrient = foodDetail.reduce((accumulator, meal) => {
     return {
-      calories: accumulator.calories + (meal.calories != null ? parseFloat(meal.calories).toFixed(2) || 0 : 0),
-      protein: accumulator.protein + (meal.protein != null ? parseFloat(meal.protein).toFixed(2) || 0 : 0),
-      carbohydrates: accumulator.carbohydrates + (meal.carbohydrates != null ? parseFloat(meal.carbohydrates).toFixed(2) || 0 : 0),
-      fat: accumulator.fat + (meal.fat != null ? parseFloat(meal.fat).toFixed(2) || 0 : 0),
-      sugar: accumulator.sugar + (meal.sugar != null ? parseFloat(meal.sugar).toFixed(2) || 0 : 0),
-      sodium: accumulator.sodium + (meal.sodium != null ? parseFloat(meal.sodium).toFixed(2) || 0 : 0),
-      fiber: accumulator.fiber + (meal.fiber != null ? parseFloat(meal.fiber).toFixed(2) || 0 : 0),
+      calories: accumulator.calories + Number(meal.calories != null ? parseFloat(meal.calories).toFixed(2) || 0 : 0),
+      protein: accumulator.protein + Number(meal.protein != null ? parseFloat(meal.protein).toFixed(2) || 0 : 0),
+      carbohydrates: accumulator.carbohydrates + Number(meal.carbohydrates != null ? parseFloat(meal.carbohydrates).toFixed(2) || 0 : 0),
+      fat: accumulator.fat + Number(meal.fat != null ? parseFloat(meal.fat).toFixed(2) || 0 : 0),
+      sugar: accumulator.sugar + Number(meal.sugar != null ? parseFloat(meal.sugar).toFixed(2) || 0 : 0),
+      sodium: accumulator.sodium + Number(meal.sodium != null ? parseFloat(meal.sodium).toFixed(2) || 0 : 0),
+      fiber: accumulator.fiber + Number(meal.fiber != null ? parseFloat(meal.fiber).toFixed(2) || 0 : 0),
     };
   }, {
     calories: 0,
@@ -98,31 +96,23 @@ const calendarLog = async(req,res)=>{
     sodium: 0,
     fiber: 0,
   });
-  
-  console.log(totalNutrient);
-  
-
   if (foodError) {
     return res.status(500).json({ error: foodError.message });
  }
  res.status(200).json(totalNutrient);
 }
 
-
-
-
 //개별 날짜 칼로리 조회
 const findLog = async(req,res)=>{
-  let {userId} = req.query
-  let {searchDate}= req.body
+  let {user_id,searchDate}= req.body
   const { data: foodDetail, error:foodError } = await supabase
   .from('meal_log')
   .select('calories')
-  .eq('user_id',userId)
+  .eq('user_id',user_id).eq('meal_date',searchDate)
   const totalCalories = foodDetail.reduce((accumulator, meal) =>
       {
         if (meal.calories != null ) {
-          return accumulator + parseFloat(meal.calories).toFixed(2);
+          return accumulator + Number(parseFloat(meal.calories).toFixed(2));
         }
         return accumulator;
       }
@@ -130,7 +120,7 @@ const findLog = async(req,res)=>{
   if (foodError) {
     return res.status(500).json({ error: foodError.message });
  }
- res.status(200).json({ message: 'Total Calrories',totalCalories });
+ res.status(200).json({ message: 'Total Calrories', totalCalories });
 }
 
 module.exports = {

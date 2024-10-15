@@ -4,8 +4,8 @@ const { mealStore,mealLogStore,calendarLog, findLog } = require('../../controlle
 
 
 //POST
-router.post('/meal', mealStore);
-router.post('/mealLog', mealLogStore);
+// router.post('/meal', mealStore);
+// router.post('/mealLog', mealLogStore);
 //GET
 router.get('/periodLogs',calendarLog);
 router.get('/dayLog',findLog)
