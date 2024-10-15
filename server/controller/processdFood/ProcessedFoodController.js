@@ -60,6 +60,7 @@ const saveProcessedFood = async (req, res) => {
       sugar,
       fiber,
       meal_type,
+      foodcd
    } = req.body;
 
    const { data, error } = await supabase.from('meal_log').insert([
@@ -77,6 +78,7 @@ const saveProcessedFood = async (req, res) => {
          meal_type,
          meal_date: new Date().toISOString().split('T')[0],
          meal_time: new Date().toTimeString().split(' ')[0],
+         foodcd
       },
    ]);
    if (error) {
