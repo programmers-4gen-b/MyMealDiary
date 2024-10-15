@@ -66,8 +66,7 @@ const mealLogStore = async (req, res)=>{
 
 //조회 기간 영양소 조회
 const calendarLog = async(req,res)=>{ 
-  let {user_id} = req.query
-  let {startDate , endDate}= req.body;
+  let { user_id, startDate , endDate}= req.body;
   const { data: foodDetail, error:foodError } = await supabase
   .from('meal_log')
   .select('*')
@@ -120,7 +119,7 @@ const findLog = async(req,res)=>{
   if (foodError) {
     return res.status(500).json({ error: foodError.message });
  }
- res.status(200).json({ message: 'Total Calrories', totalCalories });
+ res.status(200).json({ message: 'Total Calories', totalCalories });
 }
 
 module.exports = {

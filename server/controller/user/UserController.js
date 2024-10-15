@@ -107,7 +107,7 @@ const setCalories = async (req,res)=>{
       let {user_id ,average_calorie }= req.body
       const {data , error} = await supabase.from('users').update({average_calorie:average_calorie}).eq('id', user_id)
       if(error){ res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error:error.message});}
-      else res.status(StatusCodes.OK).json(data);
+      else res.status(StatusCodes.OK).json({message:"Successfully Changed"});
    }
    catch(err){
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error:error.message, message:err});

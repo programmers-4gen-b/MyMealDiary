@@ -17,4 +17,4 @@ app.use(express.json())
 app.use('/processedFood', processedFood);
 app.use('/food', food);
 app.use('/user', user);
-app.use('/report', report)
+app.use('/report', report);
