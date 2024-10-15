@@ -5,6 +5,8 @@ import Diary from "./Diary";
 import Goal from "./Goal";
 import Report from "./Report";
 import AddFood from "./AddFood";
+import Login from "./Login";
+import SignUp from "./SignUp";
 
 const App = () => {
   return (
@@ -14,6 +16,8 @@ const App = () => {
         <Route path="/goal" element={<Goal />} />
         <Route path="/report" element={<Report />} />   
         <Route path="/addFood" element={<AddFood />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </Router>
   );
