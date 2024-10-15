@@ -84,10 +84,26 @@ const Diary = () => {
   }
 
 
+  const [selectedWeekDay, setSelectedWeekDay] = useState('');
+
+  const weekDays = [
+    { day: 'monday', label: '월' },
+    { day: 'tuesday', label: '화' },
+    { day: 'wednesday', label: '수' },
+    { day: 'thursday', label: '목' },
+    { day: 'friday', label: '금' },
+    { day: 'saturday', label: '토' },
+    { day: 'sunday', label: '일' }
+  ];
+
+  const handleWeekdayClick = (day) => {
+    setSelectedWeekDay(day);
+  };
+
   const [remainingCalories, setRemainingCalories] = useState(10000);
   const [consumedCalories, setConsumedCalories] = useState(0);
 
-  const [weekday, setWeekDay] = useState('');
+
   const [morningMeals, setMorningMeals] = useState([]);
   const [lunchMeals, setlunchMeals] = useState([]);
   const [dinnerMeals, setdinnerMeals] = useState([]);
@@ -95,48 +111,29 @@ const Diary = () => {
 
   useEffect(
     () => {
-      setMorningMeals(meal_log.filter(meal => meal.meal_time === 'morning' && meal.meal_date === weekday));
-      setlunchMeals(meal_log.filter(meal => meal.meal_time === 'lunch' && meal.meal_date === weekday));
-      setdinnerMeals(meal_log.filter(meal => meal.meal_time === 'dinner' && meal.meal_date === weekday));
-      setsnackMeals(meal_log.filter(meal => meal.meal_time === 'snack' && meal.meal_date === weekday));
-    }, [weekday]
+      setMorningMeals(meal_log.filter(meal => meal.meal_time === 'morning' && meal.meal_date === selectedWeekDay));
+      setlunchMeals(meal_log.filter(meal => meal.meal_time === 'lunch' && meal.meal_date === selectedWeekDay));
+      setdinnerMeals(meal_log.filter(meal => meal.meal_time === 'dinner' && meal.meal_date === selectedWeekDay));
+      setsnackMeals(meal_log.filter(meal => meal.meal_time === 'snack' && meal.meal_date === selectedWeekDay));
+    }, [selectedWeekDay]
   );
 
   return (
     <div className="app-container">
       <div className="week-container">
-        <div className="week-slot" onClick={() => setWeekDay('monday')}>
-          <div className="week-workday-circle"></div>
-          <div className="week-text">월</div>
-        </div>
-        <div className="week-slot" onClick={() => setWeekDay('tuesday')}>
-          <div className="week-workday-circle"></div>
-          <div className="week-text">화</div>
-        </div>
-        <div className="week-slot" onClick={() => setWeekDay('wednesday')}>
-          <div className="week-workday-circle"></div>
-          <div className="week-text">수</div>
-        </div>
-        <div className="week-slot">
-          <div className="week-workday-circle"></div>
-          <div className="week-text">목</div>
-        </div>
-        <div className="week-slot">
-          <div className="week-workday-circle"></div>
-          <div className="week-text">금</div>
-        </div>
-        <div className="week-slot">
-          <div className="week-workday-circle"></div>
-          <div className="week-text">토</div>
-        </div>
-        <div className="week-slot">
-          <div className="week-holiday-circle"></div>
-          <div className="week-text">일</div>
-        </div>
+          {weekDays.map((weekDayObj) => (
+          <div 
+            key={weekDayObj.day} 
+            className="week-slot" 
+            onClick={() => handleWeekdayClick(weekDayObj.day)}
+          >
+            <div className={selectedWeekDay === weekDayObj.day ? "week-circle-changed" : "week-circle"}></div>
+            <div className="week-text">{weekDayObj.label}</div>
+          </div>
+        ))}
       </div>
 
       <div className="meal-calorie">
-        <p>{weekday}</p>
         <p>남은 칼로리: {remainingCalories}</p>
         <p onClick={() => { setRemainingCalories(remainingCalories - 1000); setConsumedCalories(consumedCalories + 1000); }}>섭취한 칼로리: {consumedCalories}</p>
       </div>
@@ -236,7 +233,7 @@ const Diary = () => {
         <button className="bottom-button" onClick={navigateToGoal}>목표</button>
         <button className="bottom-button" onClick={navigateToLogin}>로그인</button>
       </div>
-    </div>
+    </div >
   );
 };
 
