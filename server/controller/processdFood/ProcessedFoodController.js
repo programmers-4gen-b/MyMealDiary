@@ -48,21 +48,35 @@ const findProcessedFoodDetail = async (req, res) => {
 };
 
 const saveProcessedFood = async (req, res) => {
-   let { user_id, food_name, calories, protein, fat, carbohydrates, sugar, fiber } = req.body;
+   let {
+      user_id,
+      food_name,
+      food_category,
+      serving_size,
+      calories,
+      protein,
+      fat,
+      carbohydrates,
+      sugar,
+      fiber,
+      meal_type,
+   } = req.body;
 
    const { data, error } = await supabase.from('meal_log').insert([
       {
          user_id,
          food_name,
+         food_category,
+         serving_size,
          calories,
          protein,
          fat,
          carbohydrates,
          sugar,
          fiber,
+         meal_type,
          meal_date: new Date().toISOString().split('T')[0],
          meal_time: new Date().toTimeString().split(' ')[0],
-         meal_type: 'dinner',
       },
    ]);
    if (error) {
