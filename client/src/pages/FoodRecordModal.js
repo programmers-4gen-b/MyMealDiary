@@ -1,7 +1,7 @@
 import "../css/common.css";
 import React, { useState, useEffect } from "react";
 
-function FoodModal({
+function FoodRecordModal({
   isOpen,
   onClose,
   content,
@@ -43,7 +43,7 @@ function FoodModal({
   };
 
   useEffect(() => {
-    if (isOpen && defaultMealType === "snack") {
+    if (isOpen && defaultMealType === 4) {
       fetch(
         `http://localhost:4545/processedFood/list/detail?foodNm=${content.foodnm}&foodcd=${content.foodcd}`
       )
@@ -52,7 +52,7 @@ function FoodModal({
           setFoodDetail(data.processedfood[0]);
         })
         .catch((err) => console.error(err));
-    } else if (isOpen && !(defaultMealType === "snack")) {
+    } else if (isOpen && !(defaultMealType === 4)) {
       fetch(`http://localhost:4545/food/?foodNm=${content.foodnm}`) //나중에 foodcd 추가
         .then((response) => response.json())
         .then((data) => {
@@ -109,8 +109,6 @@ function FoodModal({
       meal_date: mealDate,
       meal_type: mealType,
       food_name: foodDetail.foodnm,
-      food_category: foodDetail.typenm,
-      serving_size: serving,
       calories: parseFloat(nutrients.enerc) || 0,
       protein: parseFloat(nutrients.prot) || 0,
       fat: parseFloat(nutrients.fatce) || 0,
@@ -129,13 +127,14 @@ function FoodModal({
       .then((response) => {
         if (response.ok) {
           console.log("Data successfully sent!");
-          console.log(dataToSend);
         } else {
           console.error("Failed to send data");
         }
       })
       .catch((err) => console.error("Error:", err));
   };
+
+  const handleDelete = () => {};
 
   const handleClose = () => {
     setQuantity(1);
@@ -184,6 +183,7 @@ function FoodModal({
             </select>
           </div>
           <button onClick={handleSave}>저장</button>
+          <button onClick={handleDelete}>삭제</button>
           <h4>영양정보</h4>
           <div>
             <p>서빙 사이즈: {serving}g</p>
@@ -199,4 +199,4 @@ function FoodModal({
   );
 }
 
-export default FoodModal;
+export default FoodRecordModal;

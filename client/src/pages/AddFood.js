@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 import FoodModal from "./FoodModal.js";
 import { useNavigate } from "react-router-dom";
 
-//mealType, isFoodExist 필요
+//mealType 필요
 function AddFood() {
-  const defaultMealType = 1; //임시
-  const isFoodExist = false;
+  const defaultMealType = "lunch";
+  const mealDate = "2024-10-15";
+  const userId = 11; //임시데이터
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -97,7 +98,7 @@ function AddFood() {
         onChange={(e) => setQuery(e.target.value)}
         placeholder="음식을 입력하세요"
       />
-      {defaultMealType === 4 ? (
+      {defaultMealType === "snack" ? (
         <button onClick={handleSearchProcessed}>검색</button>
       ) : (
         <button onClick={handleSerchFood}>검색</button>
@@ -134,7 +135,8 @@ function AddFood() {
         onClose={closeModal}
         content={selectedFood}
         defaultMealType={defaultMealType}
-        isFoodExist={isFoodExist}
+        mealDate={mealDate}
+        userId={userId}
       />
     </div>
   );
