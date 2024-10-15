@@ -1,6 +1,8 @@
 .week-container{
     display: flex;
     justify-content: center;
+    position: absolute;
+    top : 10%;
     margin-bottom: 10%;
 }
 
@@ -9,23 +11,23 @@
     margin: 0 10px;
 }
 
-.week-workday-circle{
+.week-circle{
     width: 30px;
     height: 30px;
     border-radius: 50%;
     background-color: #e0e0e0;
-}        
+}
 
-.week-holiday-circle{
+.week-circle-changed{
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: #fc0f0f;
+    background-color: #000000;
 }
 
 .week-text{
     font-size: 12px;
-    margin: 0 10px;
+    margin: 0 9px;
 }
 
 .meal-calorie{
