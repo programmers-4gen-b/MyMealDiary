@@ -80,7 +80,7 @@ const register = async (req, res) => {
          return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: insertError.message });
       }
 
-      res.status(StatusCodes.CREATED).json({ message: '회원가입이 완료되었습니다.', user: newUser });
+      res.status(StatusCodes.CREATED).json({ message: '회원 가입이 완료되었습니다.', user: newUser });
    } catch (error) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
          error: '회원가입 중 오류가 발생했습니다.',
