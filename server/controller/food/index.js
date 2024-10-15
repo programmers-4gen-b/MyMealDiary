@@ -8,10 +8,10 @@ dotenv.config();
 
 const findFoodList = async (req, res) => {
   try { 
-      let foodNm = req.query.foodNm
+      let foodnm = req.query.foodnm
       const { data: food, error } = await supabase
       .from('food')
-      .select('foodnm')
+      .select('foodnm, foodcd')
       .like('foodnm', `%${foodNm}%`);
       res.json({food})
     } catch (error) {
@@ -24,10 +24,10 @@ const findFoodList = async (req, res) => {
 
 const findFood= async (req, res) => {
   try { 
-      let foodNm = req.query.foodNm
+      let {foodcd,foodnm} = req.query
       const { data: food, error } = await supabase
       .from('food')
-      .select('*').eq('foodnm', foodNm)
+      .select('*').eq('foodnm', foodnm).eq('foodcd', foodcd)
       if(error){
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error})
       }  
@@ -39,6 +39,7 @@ const findFood= async (req, res) => {
       });
   }
 };
+
 
 
 module.exports = {
