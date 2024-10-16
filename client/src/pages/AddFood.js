@@ -89,6 +89,9 @@ function AddFood() {
     setSelectedFood(null);
   };
 
+  const location = useLocation();
+  const { user_id, meal_date, meal_type } = location.state || {};
+
   return (
     <div className="app-container">
       <button onClick={handleClose}>Close</button>
