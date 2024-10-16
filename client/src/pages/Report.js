@@ -3,26 +3,31 @@ import "../css/Report.css";
 import "../css/CalendarPage.css"
 import "../css/PlaceholderInfo.css"
 import 'react-calendar/dist/Calendar.css'; 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import PlaceholderInfo from '../component/PlaceholderInfo';
+import axios from 'axios';
 
 const Report = () => {
     const navigate = useNavigate();
     const [showCalendar, setShowCalendar] = useState(false); 
     const [date, setDate] = useState(new Date());
+    const [averageCalorie, setAverageCalorie] = useState(null);
+    const [consumedCalorie, setConsumedCalorie] = useState(null)
+    const [nutrients, setNutrients] = useState([]);
+    const [error, setError] = useState(null); // 에러 상태 추가
 
-    const data={
-        "totalCalories": 2000,
-        "consumedCalories": 1500,
-        "deficitCalories": 500,
+    const data = {
+        "average_calorie": averageCalorie,
+        "consumedCalories": consumedCalorie,
+        "deficitCalories": null,
         "nutrients": [
-            { "name": "탄수화물", "amount": "200" },
-            { "name": "단백질", "amount": "100" },
-            { "name": "지방", "amount": "50" }
+            { "name": "탄수화물", "amount": nutrients.carbohydrates || 0 },
+            { "name": "단백질", "amount": nutrients.protein || 0 },
+            { "name": "지방", "amount": nutrients.fat || 0 }
         ]
-    }
+    };
     
     const navigateToDiary = () => {
         navigate('/');
@@ -44,10 +49,62 @@ const Report = () => {
         setShowCalendar(!showCalendar); 
     }
 
-    const handleDateClick = (value) => {
+    const handleDateClick = async (value) => {
         setDate(value); 
-        setShowCalendar(false); 
+        setShowCalendar(false);
+        await fetchData(value);
+        await fetchNutrients(value);
+        await fetchAverageCalories();
     }
+    // 섭취한 전체 칼로리
+    const fetchData = async (selectedDate) => {
+        try {
+            const formattedDate = selectedDate.toISOString().split('T')[0];
+
+            const response = await axios.get('http://localhost:4545/report/dayLog', {
+                params: {
+                    user_id: 7,
+                    searchDate: formattedDate
+                }
+            });
+            setConsumedCalorie(response.data.totalCalories)
+        } catch (error) {
+            setError('데이터를 가져오는 중 오류가 발생했습니다.');
+        }
+    }    
+
+    // 적정 칼로리 데이터
+    const fetchAverageCalories = async () => {
+        try {
+            const response = await axios.get('http://localhost:4545/user/calorie', {
+                params: {
+                    user_id : 7
+                }
+            });
+            console.log(response)
+            setAverageCalorie(response.data.average_calorie); 
+        } catch (error) {
+            setError('적정 칼로리 데이터를 가져오는 중 오류가 발생했습니다.');
+        }
+    }
+    
+    // 영양성분 칼로리
+    const fetchNutrients = async (selectedDate)=> {
+        try {            
+            const formattedDate = selectedDate.toISOString().split('T')[0];
+
+            const response = await axios.get('http://localhost:4545/report/periodLogs',{
+                params : {
+                    user_id : 7,
+                    startDate : formattedDate,
+                    endDate : formattedDate
+                }
+            });
+            setNutrients(response.data)
+         } catch (error) {
+            setError('영양소 데이터를 가져오는 중 오류가 발생했습니다.');
+        }
+    };
 
     return (
         <div className="app-container">
@@ -69,10 +126,18 @@ const Report = () => {
             )}
 
             <div style={{ marginTop: '20px' }}>
-                <p>선택된 날짜: {date.toDateString()}</p>
+                {consumedCalorie === null && averageCalorie === null ? (
+                    <p>날짜를 선택해주세요!</p>
+                ) : (
+                    <p>선택된 날짜: {date.toDateString()}</p>
+                )}
             </div>
 
-            <PlaceholderInfo date={date.toDateString()} data={data} />
+            {consumedCalorie === null && averageCalorie === null ? (
+                null
+            ) : (
+                <PlaceholderInfo date={date.toDateString()} data={data} />
+            )}
 
             <div className="button-container">
                 <button className="bottom-button" onClick={navigateToDiary}>다이어리</button>

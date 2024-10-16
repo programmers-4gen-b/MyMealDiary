@@ -92,7 +92,7 @@ const register = async (req, res) => {
 
 const getCalories = async(req,res)=>{
    try{
-      let {user_id ,average_calorie }= req.body
+      let {user_id}= req.query
       const {data , error} = await supabase.from('users').select('average_calorie').eq('id', user_id)
       if(error){ res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error:error.message});}
       else res.status(StatusCodes.OK).json(data[0]);

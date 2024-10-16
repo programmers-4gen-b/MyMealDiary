@@ -2,6 +2,7 @@ import "../css/common.css"
 import "../css/Login&Signup.css"
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -24,16 +25,25 @@ const Login = () => {
         navigate('/login');
     }
 
-    const handleLogin = (e) => {
-        if (email && password) {
-           localStorage.setItem("token", "fake-token");
-           console.log("로그인 성공");
-        } else {
-            alert('이메일과 비밀번호를 입력하세요.')
-        }
+    const handleLogin = async (e) => {
         e.preventDefault();
-    }
 
+        if (email && password) {
+            try {
+                const response = await axios.post('http://localhost:4545/user/login',{
+                    user_name : email,
+                    password : password
+                });
+                console.log(response.data.message);
+                navigateToDiary();
+            } catch (error) {
+                console.error('로그인 오류:', error.response?.data?.message || error.message);
+                alert(error.response?.data?.message || '로그인 중 오류가 발생했습니다.'); 
+            }
+        } else {
+            alert('이메일과 비밀번호를 입력하세요.');
+        }
+    } 
     return (
         <div>
             <div className = "app-container">
@@ -59,10 +69,10 @@ const Login = () => {
                             required
                         />
                     </div>
-                    <br></br>
+                    <br />
                     <button type = "submit" className = "login-button">로그인</button>
                     <button type = "button" className = "sign-up-button"
-                    onClick ={()=>navigate('/signup')}>회원가입</button>
+                        onClick ={()=>navigate('/signup')}>회원가입</button>
                 </form>
 
                 <div className="button-container">
