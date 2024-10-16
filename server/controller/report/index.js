@@ -66,7 +66,7 @@ const mealLogStore = async (req, res)=>{
 
 //조회 기간 영양소 조회
 const calendarLog = async(req,res)=>{ 
-  let { user_id, startDate , endDate}= req.body;
+  let { user_id, startDate , endDate}= req.query;
   const { data: foodDetail, error:foodError } = await supabase
   .from('meal_log')
   .select('*')
@@ -103,7 +103,8 @@ const calendarLog = async(req,res)=>{
 
 //개별 날짜 칼로리 조회
 const findLog = async(req,res)=>{
-  let {user_id,searchDate}= req.body
+  let {user_id,searchDate}= req.query
+
   const { data: foodDetail, error:foodError } = await supabase
   .from('meal_log')
   .select('calories')

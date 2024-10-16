@@ -12,7 +12,7 @@ const findFoodList = async (req, res) => {
       const { data: food, error } = await supabase
       .from('food')
       .select('foodnm, foodcd')
-      .like('foodnm', `%${foodNm}%`);
+      .like('foodnm', `%${foodnm}%`);
       res.json({food})
     } catch (error) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
