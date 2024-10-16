@@ -53,7 +53,9 @@ function FoodModal({
         })
         .catch((err) => console.error(err));
     } else if (isOpen && !(defaultMealType === "snack")) {
-      fetch(`http://localhost:4545/food/?foodNm=${content.foodnm}`) //나중에 foodcd 추가
+      fetch(
+        `http://localhost:4545/food/list/detail?foodNm=${content.foodnm}&foodcd=${content.foodcd}`
+      )
         .then((response) => response.json())
         .then((data) => {
           setFoodDetail(data.food[0]);
@@ -116,7 +118,9 @@ function FoodModal({
       fat: parseFloat(nutrients.fatce) || 0,
       carbohydrates: parseFloat(nutrients.chocdf) || 0,
       sugar: parseFloat(nutrients.sugar) || 0,
+      sodium: parseFloat(nutrients.nat) || 0,
       fiber: parseFloat(nutrients.fibtg) || 0,
+      foodcd: foodDetail.foodcd,
     };
 
     fetch("http://localhost:4545/processedFood", {
@@ -130,6 +134,7 @@ function FoodModal({
         if (response.ok) {
           console.log("Data successfully sent!");
           console.log(dataToSend);
+          alert("저장되었습니다");
         } else {
           console.error("Failed to send data");
         }

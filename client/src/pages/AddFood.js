@@ -59,7 +59,7 @@ function AddFood() {
 
   const handleSerchFood = () => {
     if (query) {
-      fetch(`http://localhost:4545/food/List?foodNm=${query}`)
+      fetch(`http://localhost:4545/food/list?foodNm=${query}`)
         .then((response) => response.json())
         .then((data) => {
           setResults(data.food);
