@@ -160,7 +160,6 @@ const updateProcessedFood = async (req, res) => {
 const getAllProcessedFoods = async (req, res) => {
    try {
       let { user_id, meal_date } = req.query;
-
       const { data: allProcessedfood, error } = await supabase
          .from('meal_log')
          .select('*')
