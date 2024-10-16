@@ -1,6 +1,7 @@
 import "../css/common.css";
 import React from "react";
 import { useState, useEffect } from "react";
+import { useLocation } from 'react-router-dom';
 import _ from "lodash";
 import FoodModal from "./FoodModal.js";
 
@@ -31,8 +32,16 @@ function AddFood() {
     setSelectedFood(null);
   };
 
+  const location = useLocation();
+  const { user_id, meal_date, meal_type } = location.state || {};
+
   return (
     <div className="app-container">
+      <div>
+        <p>user_id : {user_id}</p>
+        <p>meal_date :  {meal_date instanceof Date ? meal_date.toLocaleDateString() : meal_date}</p>
+        <p>meal_type : {meal_type}</p>
+      </div>
       <input
         type="text"
         value={query}

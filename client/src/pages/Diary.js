@@ -1,91 +1,45 @@
 import "../css/common.css"
 import "../css/Diary.css";
+import "../css/CalendarPage.css"
+import 'react-calendar/dist/Calendar.css';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from "react";
-
-const meal_log = [
-  {
-    meal_date: 'monday',
-    meal_time: 'morning',
-    food_name: '김치찌개'
-  },
-  {
-    meal_date: 'monday',
-    meal_time: 'morning',
-    food_name: '밥'
-  },
-  {
-    meal_date: 'monday',
-    meal_time: 'morning',
-    food_name: '멸치볶음'
-  },
-  {
-    meal_date: 'monday',
-    meal_time: 'lunch',
-    food_name: '제육볶음'
-  },
-  {
-    meal_date: 'monday',
-    meal_time: 'dinner',
-    food_name: '치킨'
-  },
-  {
-    meal_date: 'monday',
-    meal_time: 'snack',
-    food_name: '마카롱'
-  },
-  {
-    meal_date: 'tuesday',
-    meal_time: 'morning',
-    food_name: '미역국'
-  },
-  {
-    meal_date: 'tuesday',
-    meal_time: 'lunch',
-    food_name: '우동'
-  },
-  {
-    meal_date: 'tuesday',
-    meal_time: 'lunch',
-    food_name: '돈까스'
-  },
-  {
-    meal_date: 'tuesday',
-    meal_time: 'dinner',
-    food_name: '피자'
-  },
-  {
-    meal_date: 'tuesday',
-    meal_time: 'snack',
-    food_name: '꽈배기'
-  }
-];
+import Calendar from 'react-calendar';
+import axios from 'axios';
 
 const Diary = () => {
   const navigate = useNavigate();
 
   const navigateToDiary = () => {
     navigate('/');
-  }
+  };
 
   const navigateToReport = () => {
     navigate('/report');
-  }
+  };
 
   const navigateToGoal = () => {
     navigate('/goal');
-  }
+  };
 
-  const navigateToAddFood = () => {
-    navigate('/addFood');
-  }
+  const navigateToAddFood = (user_id, meal_date, meal_type) => {
+    navigate('/addFood',{state : {user_id : user_id , meal_date : meal_date, meal_type : meal_type} });
+  };
+
+  const navigateToFoodDetail = (id) => {
+    navigate('/foodDetail',{state : {id : id}});
+  };
+
   const navigateToLogin = () => {
     navigate('/login');
-  }
-
-
-  const [selectedWeekDay, setSelectedWeekDay] = useState('');
-
+  };
+  
+  const [data, setData] = useState(null);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [remainingCalories, setRemainingCalories] = useState();
+  const [consumedCalories, setConsumedCalories] = useState(0);
+  const mealTypes = ['morning', 'lunch', 'dinner', 'snack'];
   const weekDays = [
     { day: 'monday', label: '월' },
     { day: 'tuesday', label: '화' },
@@ -96,135 +50,148 @@ const Diary = () => {
     { day: 'sunday', label: '일' }
   ];
 
-  const handleWeekdayClick = (day) => {
-    setSelectedWeekDay(day);
+  const toggleCalendar = () => {
+    setShowCalendar(!showCalendar);
+  }
+
+  const handleDateClick = (value) => {
+    setDate(value);
+    setShowCalendar(false);
+  }
+
+  const formatDate = (date, option) => {
+    if (option) {
+      const options = { weekday: 'long' };
+      return date.toLocaleDateString('en', options).toLowerCase();
+    }
+    else {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
   };
 
-  const [remainingCalories, setRemainingCalories] = useState(10000);
-  const [consumedCalories, setConsumedCalories] = useState(0);
+  const getMonday = (d) => {
+    const date = new Date(d);
+    const day = date.getDay();
+    const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(date.setDate(diff));
+  };
 
+  const handleWeekdayClick = (dayIndex) => {
+    const monday = getMonday(date);
+    const newDate = new Date(monday);
+    newDate.setDate(monday.getDate() + dayIndex);
+    setDate(newDate);
+  };
 
-  const [morningMeals, setMorningMeals] = useState([]);
-  const [lunchMeals, setlunchMeals] = useState([]);
-  const [dinnerMeals, setdinnerMeals] = useState([]);
-  const [snackMeals, setsnackMeals] = useState([]);
+  useEffect(() => {
+    const url = "http://localhost:3000/processedFood/getFood/all";
+    axios.get(url, {
+      params: {
+        user_id: 7,
+        meal_date: formatDate(date)
+      }
+    })
+      .then((response) => {
+        const filteredData = response.data.map(item => ({
+          id: item.id,
+          food_name: item.food_name,
+          meal_type: item.meal_type,
+          calories: item.calories
+        }));
+        const totalConsumedCalories = filteredData.reduce((pVal, cVal) => pVal + Number(cVal.calories), 0);
+        setData(filteredData);
+        setConsumedCalories(totalConsumedCalories);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }, [date]); 
 
-  useEffect(
-    () => {
-      setMorningMeals(meal_log.filter(meal => meal.meal_time === 'morning' && meal.meal_date === selectedWeekDay));
-      setlunchMeals(meal_log.filter(meal => meal.meal_time === 'lunch' && meal.meal_date === selectedWeekDay));
-      setdinnerMeals(meal_log.filter(meal => meal.meal_time === 'dinner' && meal.meal_date === selectedWeekDay));
-      setsnackMeals(meal_log.filter(meal => meal.meal_time === 'snack' && meal.meal_date === selectedWeekDay));
-    }, [selectedWeekDay]
-  );
+  useEffect(() => {
+    const url = "http://localhost:3000/user/calorie";
+    axios.get(url, {
+      params: {
+        user_id: 11
+      }
+    })
+      .then((response) => {
+        const averageCalorie = Number(response.data.average_calorie);
+        setRemainingCalories(averageCalorie-consumedCalories);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }, [consumedCalories,date]);
 
   return (
     <div className="app-container">
-      <div className="week-container">
-          {weekDays.map((weekDayObj) => (
-          <div 
-            key={weekDayObj.day} 
-            className="week-slot" 
-            onClick={() => handleWeekdayClick(weekDayObj.day)}
-          >
-            <div className={selectedWeekDay === weekDayObj.day ? "week-circle-changed" : "week-circle"}></div>
-            <div className="week-text">{weekDayObj.label}</div>
+      <button onClick={toggleCalendar} className="calendar-button">
+        {showCalendar ? '달력 숨기기' : '달력 보기'}
+      </button>
+
+      {showCalendar && (
+        <div className="calendar-modal">
+          <div className="calendar-content">
+            <Calendar
+              onChange={handleDateClick}
+              value={date}
+            />
           </div>
-        ))}
-      </div>
+        </div>
+      )}
+
+      {!showCalendar && (
+        <div className="week-container">
+          {weekDays.map((weekDayObj, index) => (
+            <div 
+              key={weekDayObj.day} 
+              className="week-slot" 
+              onClick={() => handleWeekdayClick(index)}>
+              <div className={formatDate(date, 1) === weekDayObj.day ? "week-circle-changed" : "week-circle"}></div>
+              <div className="week-text">{weekDayObj.label}</div>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="meal-calorie">
+        <p>{formatDate(date)} / {formatDate(date, 1)}</p>
         <p>남은 칼로리: {remainingCalories}</p>
-        <p onClick={() => { setRemainingCalories(remainingCalories - 1000); setConsumedCalories(consumedCalories + 1000); }}>섭취한 칼로리: {consumedCalories}</p>
+        <p>섭취한 칼로리: {consumedCalories}</p>
       </div>
 
       <div className="meal-selection">
-        <div className="meal-option-container">
-          <div className="meal-option">
-            <span>아침식사</span>
-            <button onClick={navigateToAddFood}>+</button>
-          </div>
-          <div className="divider"></div>
+        {mealTypes.map((mealType, typeIndex) => {
+          const filteredMeals = data ? data.filter(item => item.meal_type === mealType) : []; // meal_type을 기준으로 필터링
 
-          <div className="meal-option-details">
-            {
-              (() => {
-                if (morningMeals.length > 0) {
-                  return morningMeals.map((meal, index) => (
-                    <span key={index}>{meal.food_name}</span>
-                  ));
-                } else {
-                  return <span>아침식사가 없습니다.</span>;
-                }
-              })()
-            }
-          </div>
-
-        </div>
-        <div className="meal-option-container">
-          <div className="meal-option">
-            <span>점심식사</span>
-            <button onClick={navigateToAddFood}>+</button>
-          </div>
-          <div className="divider"></div>
-          
-          <div className="meal-option-details">
-            {
-              (() => {
-                if (lunchMeals.length > 0) {
-                  return lunchMeals.map((meal, index) => (
-                    <span key={index}>{meal.food_name}</span>
-                  ));
-                } else {
-                  return <span>점심식사가 없습니다.</span>;
-                }
-              })()
-            }
-          </div>
-
-        </div>
-        <div className="meal-option-container">
-          <div className="meal-option">
-            <span>저녁식사</span>
-            <button onClick={navigateToAddFood}>+</button>
-          </div>
-          <div className="divider"></div>
-          
-          <div className="meal-option-details">
-            {
-              (() => {
-                if (dinnerMeals.length > 0) {
-                  return dinnerMeals.map((meal, index) => (
-                    <span key={index}>{meal.food_name}</span>
-                  ));
-                } else {
-                  return <span>저녁식사가 없습니다.</span>;
-                }
-              })()
-            }
-          </div>
-        </div>
-        <div className="meal-option-container">
-          <div className="meal-option">
-            <span>간식/기타</span>
-            <button onClick={navigateToAddFood}>+</button>
-          </div>
-          <div className="divider"></div>
-          
-          <div className="meal-option-details">
-            {
-              (() => {
-                if (snackMeals.length > 0) {
-                  return snackMeals.map((meal, index) => (
-                    <span key={index}>{meal.food_name}</span>
-                  ));
-                } else {
-                  return <span>간식/기타가 없습니다.</span>;
-                }
-              })()
-            }
-          </div>
-        </div>
+          return (
+            <div className="meal-option-container" key={typeIndex}>
+              <div className="meal-option">
+                <span>
+                  {mealType === 'morning' && '아침식사'}
+                  {mealType === 'lunch' && '점심식사'}
+                  {mealType === 'dinner' && '저녁식사'}
+                  {mealType === 'snack' && '간식/기타'}
+                </span>
+                <button onClick={() => navigateToAddFood(9,date,mealType)}>+</button>
+              </div>
+              {filteredMeals.length > 0 && (
+                <>
+                  <div className="divider"></div>
+                  {filteredMeals.map((meal, index) => (
+                    <div className="meal-option-details" key={index}>
+                      <span>{meal.food_name}</span>
+                      <button onClick={() => navigateToFoodDetail(filteredMeals.id)}>&gt;</button>
+                    </div>
+                  ))}
+                </>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       <div className="button-container">
