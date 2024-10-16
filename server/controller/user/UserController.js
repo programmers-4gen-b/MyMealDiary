@@ -92,7 +92,7 @@ const register = async (req, res) => {
 
 const getCalories = async(req,res)=>{
    try{
-      let {user_id ,average_calorie }= req.body
+      let {user_id ,average_calorie }= req.query
       const {data , error} = await supabase.from('users').select('average_calorie').eq('id', user_id)
       if(error){ res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error:error.message});}
       else res.status(StatusCodes.OK).json(data[0]);
@@ -104,7 +104,8 @@ const getCalories = async(req,res)=>{
 
 const setCalories = async (req,res)=>{
    try{
-      let {user_id ,average_calorie }= req.body
+      let {user_id}=req.query
+      let {average_calorie }= req.body
       const {data , error} = await supabase.from('users').update({average_calorie:average_calorie}).eq('id', user_id)
       if(error){ res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error:error.message});}
       else res.status(StatusCodes.OK).json({message:"Successfully Changed"});
