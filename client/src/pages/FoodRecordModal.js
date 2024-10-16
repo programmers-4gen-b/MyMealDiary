@@ -1,19 +1,13 @@
 import "../css/common.css";
 import React, { useState, useEffect } from "react";
 
-function FoodRecordModal({
-  isOpen,
-  onClose,
-  content,
-  defaultMealType,
-  mealDate,
-  userId,
-}) {
+function FoodRecordModal({ isOpen, onClose, logId, userId }) {
   const [quantity, setQuantity] = useState(1);
   const [unit, setUnit] = useState("g");
-  const [mealType, setMealType] = useState(defaultMealType);
+  const [mealType, setMealType] = useState("");
   const [serving, setServing] = useState(quantity);
   const [nutrients, setNutrients] = useState({});
+  const [mealLog, setMealLog] = useState(null);
   const [foodDetail, setFoodDetail] = useState(null);
 
   const nutrientLabels = {
@@ -43,24 +37,17 @@ function FoodRecordModal({
   };
 
   useEffect(() => {
-    if (isOpen && defaultMealType === 4) {
-      fetch(
-        `http://localhost:4545/processedFood/list/detail?foodNm=${content.foodnm}&foodcd=${content.foodcd}`
-      )
+    if (isOpen && logId) {
+      fetch(`http://localhost:4545//processedFood/getFood/${logId}`)
         .then((response) => response.json())
         .then((data) => {
-          setFoodDetail(data.processedfood[0]);
-        })
-        .catch((err) => console.error(err));
-    } else if (isOpen && !(defaultMealType === 4)) {
-      fetch(`http://localhost:4545/food/?foodNm=${content.foodnm}`) //나중에 foodcd 추가
-        .then((response) => response.json())
-        .then((data) => {
-          setFoodDetail(data.food[0]);
+          setMealLog(data);
+          setMealType(data.meal_type);
+          setQuantity(data.serving_size);
         })
         .catch((err) => console.error(err));
     }
-  }, [isOpen, content]);
+  }, [isOpen, logId]);
 
   const countServing = (quantity, unit, foodSize) => {
     if (unit === "serv") {
