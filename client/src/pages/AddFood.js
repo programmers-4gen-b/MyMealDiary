@@ -5,7 +5,7 @@ import FoodModal from "./FoodModal.js";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../css/AddFood.css";
 
-function AddFood({userId}) {
+function AddFood() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -114,6 +114,11 @@ function AddFood({userId}) {
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            meal_type === "snack" ? handleSearchProcessed() : handleSerchFood();
+          }
+        }}
         placeholder="음식을 입력하세요"
         className="search-input"
       />
@@ -167,7 +172,7 @@ function AddFood({userId}) {
         content={selectedFood}
         defaultMealType={meal_type}
         mealDate={meal_date}
-        userId={userId}
+        userId={user_id}
       />
     </div>
   );

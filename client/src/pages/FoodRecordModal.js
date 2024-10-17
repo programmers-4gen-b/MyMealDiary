@@ -47,7 +47,6 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
           setMealLog(data);
           setMealType(data.meal_type);
           setQuantity(data.serving_size);
-          console.log("test2");
         })
         .catch((err) => console.error(err));
     }
@@ -147,8 +146,8 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
       .then((response) => {
         if (response.ok) {
           console.log("Data successfully sent!");
-          console.log(dataToSend);
           alert("저장되었습니다");
+          window.location.reload();
         } else {
           console.error("Failed to send data");
         }
@@ -175,6 +174,7 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
         if (response.ok) {
           console.log("Data successfully sent!");
           alert("삭제되었습니다");
+          window.location.reload();
         } else {
           console.error("Failed to send data");
         }

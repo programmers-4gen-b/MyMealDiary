@@ -124,17 +124,21 @@ function FoodModal({
       foodcd: foodDetail.foodcd,
     };
 
-    fetch(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/processedFood`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataToSend),
-    })
+    fetch(
+      `http://localhost:${process.env.REACT_APP_SERVER_PORT}/processedFood`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      }
+    )
       .then((response) => {
         if (response.ok) {
           console.log("Data successfully sent!");
           alert("저장되었습니다");
+          window.location.reload();
         } else {
           console.error("Failed to send data");
         }
