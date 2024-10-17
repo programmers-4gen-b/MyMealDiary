@@ -229,7 +229,7 @@ const Diary = () => {
           isOpen={isModalOpen}
           onClose={closeModal}
           logId={logId}
-          userId={11}
+          userId={7}
         />
       </div>
 

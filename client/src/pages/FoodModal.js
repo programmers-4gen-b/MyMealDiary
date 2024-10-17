@@ -184,7 +184,7 @@ function FoodModal({
                 value={mealType}
                 onChange={(e) => setMealType(e.target.value)}
               >
-                <option value="breakfast">아침식사</option>
+                <option value="morning">아침식사</option>
                 <option value="lunch">점심식사</option>
                 <option value="dinner">저녁식사</option>
                 <option value="snack">간식</option>
