@@ -196,9 +196,11 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
       <div className="modal">
         {foodDetail && (
           <div className="modal-content">
-            <button onClick={handleClose}>Close</button>
+            <button onClick={handleClose} className="modal-close-button">
+              Close
+            </button>
             <h3>{foodDetail.foodnm}</h3>
-            <div>
+            <div className="input-group">
               <label>+/-</label>
               <input
                 type="number"
@@ -206,7 +208,7 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
                 onChange={(e) => setQuantity(e.target.value)}
               />
             </div>
-            <div>
+            <div className="input-group">
               <label>단위</label>
               <select value={unit} onChange={(e) => setUnit(e.target.value)}>
                 <option value="serv">
@@ -216,7 +218,7 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
               </select>
             </div>
 
-            <div>
+            <div className="input-group">
               <label>일정</label>
               <select
                 value={mealType}
@@ -228,10 +230,19 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
                 <option value="snack">간식</option>
               </select>
             </div>
-            <button onClick={handleSave}>저장</button>
-            <button onClick={handleDelete}>삭제</button>
+            <div className="botton-container">
+              <button onClick={handleSave} className="modal-button">
+                저장
+              </button>
+              <button
+                onClick={handleDelete}
+                className="modal-button delete-button"
+              >
+                삭제
+              </button>
+            </div>
             <h4>영양정보</h4>
-            <div>
+            <div className="nutrition-info">
               <p>서빙 사이즈: {serving}g</p>
               {Object.entries(nutrients).map(([key, value]) => (
                 <p key={key}>

@@ -3,6 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import FoodModal from "./FoodModal.js";
 import { useNavigate, useLocation } from "react-router-dom";
+import "../css/AddFood.css";
 
 function AddFood({userId}) {
   const [query, setQuery] = useState("");
@@ -81,6 +82,19 @@ function AddFood({userId}) {
     }
   };
 
+  useEffect(() => {
+    //모달창 뜨면 스크롤 방지
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isModalOpen]);
+
   const handleItemClick = (food) => {
     setSelectedFood(food);
     setIsModalOpen(true);
@@ -93,39 +107,54 @@ function AddFood({userId}) {
 
   return (
     <div className="app-container">
-      <button onClick={handleClose}>Close</button>
+      <button onClick={handleClose} className="close-button">
+        Close
+      </button>
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="음식을 입력하세요"
+        className="search-input"
       />
       {meal_type === "snack" ? (
-        <button onClick={handleSearchProcessed}>검색</button>
+        <button onClick={handleSearchProcessed} className="search-button">
+          검색
+        </button>
       ) : (
-        <button onClick={handleSerchFood}>검색</button>
+        <button onClick={handleSerchFood} className="search-button">
+          검색
+        </button>
       )}
-      <ul>
+      <ul className="search-results">
         {results && results.length > 0
           ? results.slice(0, 20).map((food) => (
-              <li key={food.foodcd} onClick={() => handleItemClick(food)}>
+              <li
+                key={food.foodcd}
+                onClick={() => handleItemClick(food)}
+                className="search-item"
+              >
                 {food.foodnm}
               </li>
             ))
           : recentSearches.length > 0 && (
-              <div>
+              <div className="recent-searches">
                 <h4>최근 검색어</h4>
-                <ul>
+                <ul className="recent-searches-list">
                   {recentSearches.map((search, index) => (
                     <li
                       key={index}
                       onClick={() => handleRecentSearchClick(search)}
+                      className="recent-search-item"
                     >
                       {search}
                     </li>
                   ))}
                 </ul>
-                <button onClick={handleClearRecentSearches}>
+                <button
+                  onClick={handleClearRecentSearches}
+                  className="clear-button"
+                >
                   최근 검색어 삭제
                 </button>
               </div>

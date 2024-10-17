@@ -1,0 +1,110 @@
+/* 공통 레이아웃 */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  min-height: 80vh;
+  padding: 20px;
+  width: 600px;
+  margin: 0 auto;
+  position: relative;
+  gap: 15px;
+}
+
+/* Close 버튼 */
+.close-button {
+  background-color: grey;
+  color: white;
+  padding: 5px 10px;
+  font-size: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* 검색 입력 필드 */
+.search-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 25px;
+}
+
+/* 검색 버튼 */
+.search-button {
+  background-color: black;
+  color: white;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* 검색 결과 리스트 */
+.search-results {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+}
+
+.search-item {
+  padding: 7px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-item:hover {
+  background-color: #f1f1f1;
+}
+
+/* 최근 검색어 */
+.recent-searches {
+  width: 100%;
+}
+
+.recent-searches-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.recent-search-item {
+  padding: 6px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.recent-search-item:hover {
+  background-color: #e0e0e0;
+}
+
+/* 최근 검색어 삭제 버튼 */
+.clear-button {
+  background-color: grey;
+  color: white;
+  padding: 8px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}

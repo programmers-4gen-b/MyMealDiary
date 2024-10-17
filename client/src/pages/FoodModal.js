@@ -134,7 +134,6 @@ function FoodModal({
       .then((response) => {
         if (response.ok) {
           console.log("Data successfully sent!");
-          console.log(dataToSend);
           alert("저장되었습니다");
         } else {
           console.error("Failed to send data");
@@ -158,9 +157,11 @@ function FoodModal({
       <div className="modal">
         {foodDetail && (
           <div className="modal-content">
-            <button onClick={handleClose}>Close</button>
+            <button onClick={handleClose} className="modal-close-button">
+              Close
+            </button>
             <h3>{foodDetail.foodnm}</h3>
-            <div>
+            <div className="input-group">
               <label>+/-</label>
               <input
                 type="number"
@@ -168,7 +169,7 @@ function FoodModal({
                 onChange={(e) => setQuantity(e.target.value)}
               />
             </div>
-            <div>
+            <div className="input-group">
               <label>단위</label>
               <select value={unit} onChange={(e) => setUnit(e.target.value)}>
                 <option value="serv">
@@ -178,7 +179,7 @@ function FoodModal({
               </select>
             </div>
 
-            <div>
+            <div className="input-group">
               <label>일정</label>
               <select
                 value={mealType}
@@ -190,9 +191,13 @@ function FoodModal({
                 <option value="snack">간식</option>
               </select>
             </div>
-            <button onClick={handleSave}>저장</button>
+            <div className="save">
+              <button onClick={handleSave} className="modal-button">
+                저장
+              </button>
+            </div>
             <h4>영양정보</h4>
-            <div>
+            <div className="nutrition-info">
               <p>서빙 사이즈: {serving}g</p>
               {Object.entries(nutrients).map(([key, value]) => (
                 <p key={key}>
