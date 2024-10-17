@@ -1,18 +1,19 @@
 import React, {useState} from "react";
 import axios from 'axios';
+import { useUser } from './UserContext';
 
 function BmrCalculator( {formData} ) {
   const [result, setResult] = useState("")
   const [result2,setResult2] = useState("")
   const [result3,setResult3] = useState("")
   const [errors, setErrors] = useState({});
+  const { userId } = useUser();
  
   const calculateBmr = () => {
     const {weight, height, age,
       gender, activityGrade, exerciseGrade} = formData;
             
     const newErrors={};
-    
     if (!weight) newErrors.weight = "체중을 입력해주세요.";
     if (!height) newErrors.height = "키를 입력해주세요.";
     if (!age) newErrors.age = "나이를 입력해주세요.";
@@ -53,7 +54,7 @@ function BmrCalculator( {formData} ) {
     
     const saveResult = async () => {
       const dataToSave = {
-        user_id : 7,
+        user_id : userId,
         average_calorie : result3
       };
   

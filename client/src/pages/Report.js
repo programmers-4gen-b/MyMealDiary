@@ -1,5 +1,4 @@
 import "../css/common.css";
-import "../css/Report.css";
 import "../css/CalendarPage.css"
 import "../css/PlaceholderInfo.css"
 import 'react-calendar/dist/Calendar.css'; 
@@ -8,15 +7,17 @@ import { useNavigate } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import PlaceholderInfo from '../component/PlaceholderInfo';
 import axios from 'axios';
+import { useUser } from '../component/UserContext';
 
-const Report = ({userId}) => {
+const Report = () => {
     const navigate = useNavigate();
     const [showCalendar, setShowCalendar] = useState(false); 
     const [date, setDate] = useState(new Date());
     const [averageCalorie, setAverageCalorie] = useState(null);
     const [consumedCalorie, setConsumedCalorie] = useState(null)
     const [nutrients, setNutrients] = useState([]);
-    const [error, setError] = useState(null); 
+    const [error, setError] = useState(null);
+    const { userId } = useUser();
 
     const data = {
         "average_calorie": averageCalorie,
@@ -98,7 +99,7 @@ const Report = ({userId}) => {
 
             const response = await axios.get(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/report/periodLogs`,{
                 params : {
-                    user_id : 7,
+                    user_id : userId,
                     startDate : formattedDate,
                     endDate : formattedDate
                 }
