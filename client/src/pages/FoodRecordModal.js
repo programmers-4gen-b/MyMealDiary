@@ -2,19 +2,13 @@ import "../css/common.css";
 import React, { useState, useEffect } from "react";
 import "../css/Modal.css";
 
-function FoodModal({
-  isOpen,
-  onClose,
-  content,
-  defaultMealType,
-  mealDate,
-  userId,
-}) {
+function FoodRecordModal({ isOpen, onClose, logId, userId }) {
   const [quantity, setQuantity] = useState(1);
   const [unit, setUnit] = useState("g");
-  const [mealType, setMealType] = useState(defaultMealType);
+  const [mealType, setMealType] = useState("");
   const [serving, setServing] = useState(quantity);
   const [nutrients, setNutrients] = useState({});
+  const [mealLog, setMealLog] = useState(null);
   const [foodDetail, setFoodDetail] = useState(null);
 
   const nutrientLabels = {
@@ -44,26 +38,42 @@ function FoodModal({
   };
 
   useEffect(() => {
-    if (isOpen && defaultMealType === "snack") {
+    if (isOpen && logId) {
       fetch(
-        `http://localhost:${process.env.REACT_APP_PORT}/processedFood/list/detail?foodNm=${content.foodnm}&foodcd=${content.foodcd}`
+        `http://localhost:${process.env.REACT_APP_PORT}/processedFood/getFood/${logId}`
       )
         .then((response) => response.json())
         .then((data) => {
-          setFoodDetail(data.processedfood[0]);
+          setMealLog(data);
+          setMealType(data.meal_type);
+          setQuantity(data.serving_size);
+          console.log("test2");
         })
         .catch((err) => console.error(err));
-    } else if (isOpen && !(defaultMealType === "snack")) {
+    }
+  }, [isOpen, logId]);
+
+  useEffect(() => {
+    if (mealLog && mealLog.food_category == "음식") {
       fetch(
-        `http://localhost:${process.env.REACT_APP_PORT}/food/list/detail?foodNm=${content.foodnm}&foodcd=${content.foodcd}`
+        `http://localhost:${process.env.REACT_APP_PORT}/food/list/detail?foodNm=${mealLog.food_name}&foodcd=${mealLog.foodcd}`
       )
         .then((response) => response.json())
         .then((data) => {
           setFoodDetail(data.food[0]);
         })
         .catch((err) => console.error(err));
+    } else if (mealLog && mealLog.food_category == "가공식품") {
+      fetch(
+        `http://localhost:${process.env.REACT_APP_PORT}/processedFood/list/detail?foodNm=${mealLog.food_name}&foodcd=${mealLog.foodcd}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setFoodDetail(data.processedfood[0]);
+        })
+        .catch((err) => console.error(err));
     }
-  }, [isOpen, content]);
+  }, [mealLog]);
 
   const countServing = (quantity, unit, foodSize) => {
     if (unit === "serv") {
@@ -109,7 +119,7 @@ function FoodModal({
   const handleSave = () => {
     const dataToSend = {
       user_id: userId,
-      meal_date: mealDate,
+      meal_date: mealLog.meal_date,
       meal_type: mealType,
       food_name: foodDetail.foodnm,
       food_category: foodDetail.typenm,
@@ -124,13 +134,16 @@ function FoodModal({
       foodcd: foodDetail.foodcd,
     };
 
-    fetch(`http://localhost:${process.env.REACT_APP_PORT}/processedFood`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataToSend),
-    })
+    fetch(
+      `http://localhost:${process.env.REACT_APP_PORT}/processedFood/update/${logId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      }
+    )
       .then((response) => {
         if (response.ok) {
           console.log("Data successfully sent!");
@@ -143,10 +156,35 @@ function FoodModal({
       .catch((err) => console.error("Error:", err));
   };
 
+  const handleDelete = () => {
+    const dataToSend = {
+      user_id: userId,
+      id: logId,
+    };
+    fetch(
+      `http://localhost:${process.env.REACT_APP_PORT}/processedFood/delete`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      }
+    )
+      .then((response) => {
+        if (response.ok) {
+          console.log("Data successfully sent!");
+          alert("삭제되었습니다");
+        } else {
+          console.error("Failed to send data");
+        }
+      })
+      .catch((err) => console.error("Error:", err));
+  };
+
   const handleClose = () => {
     setQuantity(1);
     setUnit("g");
-    setMealType(defaultMealType);
     setServing(1);
     onClose();
   };
@@ -191,6 +229,7 @@ function FoodModal({
               </select>
             </div>
             <button onClick={handleSave}>저장</button>
+            <button onClick={handleDelete}>삭제</button>
             <h4>영양정보</h4>
             <div>
               <p>서빙 사이즈: {serving}g</p>
@@ -207,4 +246,4 @@ function FoodModal({
   );
 }
 
-export default FoodModal;
+export default FoodRecordModal;

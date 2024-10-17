@@ -90,7 +90,7 @@ const Goal = () => {
 
     return (
         <div className="app-container">
-            <h2>목표</h2>
+            <h1>Goal Page</h1>
 
             <div className="input-body">
                 <span>나이 : </span>

@@ -1,0 +1,39 @@
+/* 모달을 덮는 오버레이 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* 모달 컨텐츠 */
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%; /* 모달의 가로 크기 */
+  max-width: 600px; /* 모달의 최대 가로 크기 */
+  max-height: 80vh; /* 모달의 최대 높이를 설정하여 화면을 벗어나지 않게 함 */
+  overflow-y: auto; /* 내용이 많을 때 위아래로 스크롤 가능하게 설정 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 스크롤바 스타일 (선택 사항) */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}

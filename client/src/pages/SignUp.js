@@ -26,7 +26,7 @@ const SignUp = () => {
     const navigateToLogin = () => {
         navigate('/login');
     }
-
+    
     const handleRegister = async (e) => {
         e.preventDefault();
         setLoading(true);

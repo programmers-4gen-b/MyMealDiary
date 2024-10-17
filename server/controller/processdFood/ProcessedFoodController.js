@@ -119,6 +119,7 @@ const updateProcessedFood = async (req, res) => {
       sugar,
       sodium,
       fiber,
+      meal_type,
    } = req.body;
 
    const updated_at = new Date().toISOString(); // 업데이트된 시간 (ISO 포맷)
@@ -142,6 +143,7 @@ const updateProcessedFood = async (req, res) => {
             sodium,
             fiber,
             updated_at,
+            meal_type,
          })
          .eq('id', id);
 

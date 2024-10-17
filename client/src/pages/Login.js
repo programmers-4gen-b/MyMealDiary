@@ -3,8 +3,6 @@ import "../css/Login&Signup.css"
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Cookies } from "react-cookie";
-import {login} from './useAuth';
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -45,7 +43,6 @@ const Login = () => {
             setLoading(false);
         }
     };
-
     return (
         <div>
             <div className="app-container">
