@@ -140,6 +140,19 @@ const Diary = () => {
     }
   }, [logId]);
 
+  useEffect(() => {
+    //모달창 뜨면 스크롤방지
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isModalOpen]);
+
   const closeModal = () => {
     setIsModalOpen(false);
     setLogId(null);
@@ -203,7 +216,7 @@ const Diary = () => {
                   {mealType === "dinner" && "저녁식사"}
                   {mealType === "snack" && "간식/기타"}
                 </span>
-                <button onClick={() => navigateToAddFood(9, date, mealType)}>
+                <button onClick={() => navigateToAddFood(7, date, mealType)}>
                   +
                 </button>
               </div>
