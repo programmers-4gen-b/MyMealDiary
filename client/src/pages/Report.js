@@ -130,18 +130,10 @@ const Report = () => {
             )}
 
             <div style={{ marginTop: '20px' }}>
-                {consumedCalorie === null && averageCalorie === null ? (
-                    <p>날짜를 선택해주세요!</p>
-                ) : (
-                    <p>선택된 날짜: {date.toDateString()}</p>
-                )}
+                <p>선택된 날짜: {date.toDateString()}</p>
             </div>
-
-            {consumedCalorie === null && averageCalorie === null ? (
-                null
-            ) : (
-                <PlaceholderInfo date={date.toDateString()} data={data} />
-            )}
+            
+            <PlaceholderInfo date={date.toDateString()} data={data} />
 
             <div className="button-container">
                 <button className="bottom-button" onClick={navigateToDiary}>다이어리</button>

@@ -13,18 +13,20 @@ const PlaceholderInfo = ({ date, data }) => {
                                 <th>목표 칼로리</th>
                                 <th>섭취한 칼로리</th>
                                 <th>부족한 칼로리</th>
-                                <th>영양 성분</th>
+                                <th>주요 영양 성분</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{data.average_calorie} kcal</td>
-                                <td>{data.consumedCalories} kcal</td>
-                                <td>{data.average_calorie - data.consumedCalories} kcal</td>
+                                <td>{Math.round(data.average_calorie)} kcal</td>
+                                <td>{Math.round(data.consumedCalories)} kcal</td>
+                                <td>{Math.round(data.average_calorie - data.consumedCalories)} kcal</td>
                                 <td>
                                     <ul>
                                         {data.nutrients.map((nutrient,index) =>(
-                                            <li key = {index}>{nutrient.name}: {nutrient.amount !== null ? Math.round(nutrient.amount) : 0} g </li>
+                                            <li key = {index}>
+                                                {nutrient.name}: {nutrient.amount !== null ? Math.round(nutrient.amount) : 0} g 
+                                            </li>
                                         ))}
                                     </ul>
                                 </td>

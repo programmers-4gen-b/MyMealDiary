@@ -11,15 +11,16 @@ function BmrCalculator( {formData} ) {
  
   const calculateBmr = () => {
     const {weight, height, age,
-      gender, activityGrade, exerciseGrade} = formData;
+      gender, activityGrade, exerciseGrade, purpose} = formData;
             
     const newErrors={};
-    if (!weight) newErrors.weight = "체중을 입력해주세요.";
-    if (!height) newErrors.height = "키를 입력해주세요.";
-    if (!age) newErrors.age = "나이를 입력해주세요.";
-    if (!gender) newErrors.gender = "성별을 선택해주세요.";
-    if (!activityGrade) newErrors.activityGrade = "활동 등급을 입력해주세요.";
-    if (!exerciseGrade) newErrors.exerciseGrade = "운동 등급을 입력해주세요.";
+    if (!weight) newErrors.weight = "체중을 입력해주세요!";
+    if (!height) newErrors.height = "키를 입력해주세요!";
+    if (!age) newErrors.age = "나이를 입력해주세요!";
+    if (!gender) newErrors.gender = "성별을 선택해주세요!";
+    if (!activityGrade) newErrors.activityGrade = "활동 수준을 선택해주세요.";
+    if (!exerciseGrade) newErrors.exerciseGrade = "운동 빈도를 선택해주세요.";
+    if (!purpose) newErrors.purpose = "운동 목적을 입력해주세요.";
 
     setErrors(newErrors);
 
@@ -35,6 +36,7 @@ function BmrCalculator( {formData} ) {
     const a = parseInt(age);
     const aG = parseFloat(activityGrade);
     const eG = parseFloat(exerciseGrade);
+    const pG = parseFloat(purpose);
     let bmr;
     let amr;
 
@@ -48,7 +50,7 @@ function BmrCalculator( {formData} ) {
       
       setResult(Math.round(bmr)) 
       setResult2(Math.round(amr))
-      setResult3(Math.round(amr*0.85))
+      setResult3(Math.round(amr*pG))
       
     }; 
     

@@ -31,7 +31,8 @@ const Goal = ({userId}) => {
         gender: "",
         result: "",
         activityGrade: "",
-        exerciseGrade: ""
+        exerciseGrade: "",
+        purpose: ""
     });
 
     const [showOptions, setShowOptions] = useState({
@@ -93,6 +94,19 @@ const Goal = ({userId}) => {
         }
     };
 
+    const getPurposeText = (value) => {
+        switch (value) {
+            case 0.85:
+                return "체중 감량 ";
+            case 1.0:
+                return "체중 유지";
+            case 1.15:
+                return "체중 증량";
+            default:
+                return "선택해주세요"; 
+        }
+    };
+
     return (
         <div className="app-container">
             <h1>Goal Page</h1>
@@ -131,7 +145,7 @@ const Goal = ({userId}) => {
             </div>
 
             <div className="input-body">
-                <span>활동수준:</span>
+                <span>활동 수준:</span>
 
                 <button type="button" onClick={() => toggleOptions('activityGrade')}>
                     {getActivityGradeText(formData.activityGrade)}
@@ -159,6 +173,20 @@ const Goal = ({userId}) => {
                     <button onClick={() => handleOptionSelect('exerciseGrade', 0.3)}> 주에 운동 7회 이상</button>
                 </div>
 
+            </div>
+
+            <div className="input-body">
+                <span>운동 목적:</span>
+
+                <button type="button" onClick={() => toggleOptions('purpose')}>
+                    {getPurposeText(formData.purpose)}
+                </button>
+
+                <div className={`options ${showOptions.purpose ? "show" : ""}`}>
+                    <button onClick={() => handleOptionSelect('purpose', 0.85)}> 체중 감량</button>
+                    <button onClick={() => handleOptionSelect('purpose', 1.0)}> 체중 유지</button>
+                    <button onClick={() => handleOptionSelect('purpose', 1.15)}> 체중 증량</button>
+                </div>
             </div>
 
             <GenderSelection gender={formData.gender}

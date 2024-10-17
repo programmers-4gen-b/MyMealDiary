@@ -12,8 +12,7 @@
     margin-top: 10px;
 }
 
-.table th,
-.table td {
+.table th, .table td {
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
@@ -21,4 +20,15 @@
 
 .table th {
     background-color: #f0f0f0;
+}
+
+
+.table td ul {
+    list-style-type: square; 
+    padding-left: 20px;      
+    margin: 0;               
+}
+
+.table td ul li {
+    margin-bottom: 5px;      
 }
