@@ -2,19 +2,17 @@ import "../css/common.css";
 import React from "react";
 import { useState, useEffect } from "react";
 import FoodModal from "./FoodModal.js";
-import { useNavigate, useLocation} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-//mealType 필요
 function AddFood() {
-  const defaultMealType = "lunch";
-  const mealDate = "2024-10-15";
-  const userId = 11; //임시데이터
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFood, setSelectedFood] = useState(null);
   const [recentSearches, setRecentSearches] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { user_id, meal_date, meal_type } = location.state || {};
 
   const handleClose = () => {
     navigate("/");
@@ -37,7 +35,9 @@ function AddFood() {
 
   const handleSearchProcessed = () => {
     if (query) {
-      fetch(`http://localhost:4545/processedFood/list?foodNm=${query}`)
+      fetch(
+        `http://localhost:${process.env.REACT_APP_PORT}/processedFood/list?foodNm=${query}`
+      )
         .then((response) => response.json())
         .then((data) => {
           setResults(data.processedfood);
@@ -59,7 +59,9 @@ function AddFood() {
 
   const handleSerchFood = () => {
     if (query) {
-      fetch(`http://localhost:4545/food/list?foodNm=${query}`)
+      fetch(
+        `http://localhost:${process.env.REACT_APP_PORT}/food/list?foodNm=${query}`
+      )
         .then((response) => response.json())
         .then((data) => {
           setResults(data.food);
@@ -89,9 +91,6 @@ function AddFood() {
     setSelectedFood(null);
   };
 
-  const location = useLocation();
-  const { user_id, meal_date, meal_type } = location.state || {};
-
   return (
     <div className="app-container">
       <button onClick={handleClose}>Close</button>
@@ -101,7 +100,7 @@ function AddFood() {
         onChange={(e) => setQuery(e.target.value)}
         placeholder="음식을 입력하세요"
       />
-      {defaultMealType === "snack" ? (
+      {meal_type === "snack" ? (
         <button onClick={handleSearchProcessed}>검색</button>
       ) : (
         <button onClick={handleSerchFood}>검색</button>
@@ -137,9 +136,9 @@ function AddFood() {
         isOpen={isModalOpen}
         onClose={closeModal}
         content={selectedFood}
-        defaultMealType={defaultMealType}
-        mealDate={mealDate}
-        userId={userId}
+        defaultMealType={meal_type}
+        mealDate={meal_date}
+        userId={user_id}
       />
     </div>
   );

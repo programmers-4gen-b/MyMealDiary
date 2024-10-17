@@ -1,5 +1,6 @@
 import "../css/common.css";
 import React, { useState, useEffect } from "react";
+import "../css/Modal.css";
 
 function FoodModal({
   isOpen,
@@ -45,7 +46,7 @@ function FoodModal({
   useEffect(() => {
     if (isOpen && defaultMealType === "snack") {
       fetch(
-        `http://localhost:4545/processedFood/list/detail?foodNm=${content.foodnm}&foodcd=${content.foodcd}`
+        `http://localhost:${process.env.REACT_APP_PORT}/processedFood/list/detail?foodNm=${content.foodnm}&foodcd=${content.foodcd}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -54,7 +55,7 @@ function FoodModal({
         .catch((err) => console.error(err));
     } else if (isOpen && !(defaultMealType === "snack")) {
       fetch(
-        `http://localhost:4545/food/list/detail?foodNm=${content.foodnm}&foodcd=${content.foodcd}`
+        `http://localhost:${process.env.REACT_APP_PORT}/food/list/detail?foodNm=${content.foodnm}&foodcd=${content.foodcd}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -123,7 +124,7 @@ function FoodModal({
       foodcd: foodDetail.foodcd,
     };
 
-    fetch("http://localhost:4545/processedFood", {
+    fetch(`http://localhost:${process.env.REACT_APP_PORT}/processedFood`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -154,52 +155,54 @@ function FoodModal({
 
   return (
     <div className="app-container">
-      <button onClick={handleClose}>Close</button>
-      {foodDetail && (
-        <>
-          <h3>{foodDetail.foodnm}</h3>
-          <div>
-            <label>+/-</label>
-            <input
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>단위</label>
-            <select value={unit} onChange={(e) => setUnit(e.target.value)}>
-              <option value="serv">
-                인분({foodDetail.foodsize ? foodDetail.foodsize : "정보없음"})
-              </option>
-              <option value="g">g</option>
-            </select>
-          </div>
+      <div className="modal">
+        {foodDetail && (
+          <div className="modal-content">
+            <button onClick={handleClose}>Close</button>
+            <h3>{foodDetail.foodnm}</h3>
+            <div>
+              <label>+/-</label>
+              <input
+                type="number"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+              />
+            </div>
+            <div>
+              <label>단위</label>
+              <select value={unit} onChange={(e) => setUnit(e.target.value)}>
+                <option value="serv">
+                  인분({foodDetail.foodsize ? foodDetail.foodsize : "정보없음"})
+                </option>
+                <option value="g">g</option>
+              </select>
+            </div>
 
-          <div>
-            <label>일정</label>
-            <select
-              value={mealType}
-              onChange={(e) => setMealType(e.target.value)}
-            >
-              <option value="breakfast">아침식사</option>
-              <option value="lunch">점심식사</option>
-              <option value="dinner">저녁식사</option>
-              <option value="snack">간식</option>
-            </select>
+            <div>
+              <label>일정</label>
+              <select
+                value={mealType}
+                onChange={(e) => setMealType(e.target.value)}
+              >
+                <option value="breakfast">아침식사</option>
+                <option value="lunch">점심식사</option>
+                <option value="dinner">저녁식사</option>
+                <option value="snack">간식</option>
+              </select>
+            </div>
+            <button onClick={handleSave}>저장</button>
+            <h4>영양정보</h4>
+            <div>
+              <p>서빙 사이즈: {serving}g</p>
+              {Object.entries(nutrients).map(([key, value]) => (
+                <p key={key}>
+                  {nutrientLabels[key]}: {value}
+                </p>
+              ))}
+            </div>
           </div>
-          <button onClick={handleSave}>저장</button>
-          <h4>영양정보</h4>
-          <div>
-            <p>서빙 사이즈: {serving}g</p>
-            {Object.entries(nutrients).map(([key, value]) => (
-              <p key={key}>
-                {nutrientLabels[key]}: {value}
-              </p>
-            ))}
-          </div>
-        </>
-      )}
+        )}
+      </div>
     </div>
   );
 }
