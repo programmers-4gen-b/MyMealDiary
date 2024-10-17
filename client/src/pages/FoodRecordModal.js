@@ -1,5 +1,6 @@
 import "../css/common.css";
 import React, { useState, useEffect } from "react";
+import "../css/Modal.css";
 
 function FoodRecordModal({ isOpen, onClose, logId, userId }) {
   const [quantity, setQuantity] = useState(1);
@@ -38,16 +39,41 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
 
   useEffect(() => {
     if (isOpen && logId) {
-      fetch(`http://localhost:4545//processedFood/getFood/${logId}`)
+      fetch(
+        `http://localhost:${process.env.REACT_APP_PORT}/processedFood/getFood/${logId}`
+      )
         .then((response) => response.json())
         .then((data) => {
           setMealLog(data);
           setMealType(data.meal_type);
           setQuantity(data.serving_size);
+          console.log("test2");
         })
         .catch((err) => console.error(err));
     }
   }, [isOpen, logId]);
+
+  useEffect(() => {
+    if (mealLog && mealLog.food_category == "음식") {
+      fetch(
+        `http://localhost:${process.env.REACT_APP_PORT}/food/list/detail?foodNm=${mealLog.food_name}&foodcd=${mealLog.foodcd}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setFoodDetail(data.food[0]);
+        })
+        .catch((err) => console.error(err));
+    } else if (mealLog && mealLog.food_category == "가공식품") {
+      fetch(
+        `http://localhost:${process.env.REACT_APP_PORT}/processedFood/list/detail?foodNm=${mealLog.food_name}&foodcd=${mealLog.foodcd}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setFoodDetail(data.processedfood[0]);
+        })
+        .catch((err) => console.error(err));
+    }
+  }, [mealLog]);
 
   const countServing = (quantity, unit, foodSize) => {
     if (unit === "serv") {
@@ -93,27 +119,36 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
   const handleSave = () => {
     const dataToSend = {
       user_id: userId,
-      meal_date: mealDate,
+      meal_date: mealLog.meal_date,
       meal_type: mealType,
       food_name: foodDetail.foodnm,
+      food_category: foodDetail.typenm,
+      serving_size: serving,
       calories: parseFloat(nutrients.enerc) || 0,
       protein: parseFloat(nutrients.prot) || 0,
       fat: parseFloat(nutrients.fatce) || 0,
       carbohydrates: parseFloat(nutrients.chocdf) || 0,
       sugar: parseFloat(nutrients.sugar) || 0,
+      sodium: parseFloat(nutrients.nat) || 0,
       fiber: parseFloat(nutrients.fibtg) || 0,
+      foodcd: foodDetail.foodcd,
     };
 
-    fetch("http://localhost:4545/processedFood", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataToSend),
-    })
+    fetch(
+      `http://localhost:${process.env.REACT_APP_PORT}/processedFood/update/${logId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      }
+    )
       .then((response) => {
         if (response.ok) {
           console.log("Data successfully sent!");
+          console.log(dataToSend);
+          alert("저장되었습니다");
         } else {
           console.error("Failed to send data");
         }
@@ -121,12 +156,35 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
       .catch((err) => console.error("Error:", err));
   };
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    const dataToSend = {
+      user_id: userId,
+      id: logId,
+    };
+    fetch(
+      `http://localhost:${process.env.REACT_APP_PORT}/processedFood/delete`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      }
+    )
+      .then((response) => {
+        if (response.ok) {
+          console.log("Data successfully sent!");
+          alert("삭제되었습니다");
+        } else {
+          console.error("Failed to send data");
+        }
+      })
+      .catch((err) => console.error("Error:", err));
+  };
 
   const handleClose = () => {
     setQuantity(1);
     setUnit("g");
-    setMealType(defaultMealType);
     setServing(1);
     onClose();
   };
@@ -135,53 +193,55 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
 
   return (
     <div className="app-container">
-      <button onClick={handleClose}>Close</button>
-      {foodDetail && (
-        <>
-          <h3>{foodDetail.foodnm}</h3>
-          <div>
-            <label>+/-</label>
-            <input
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>단위</label>
-            <select value={unit} onChange={(e) => setUnit(e.target.value)}>
-              <option value="serv">
-                인분({foodDetail.foodsize ? foodDetail.foodsize : "정보없음"})
-              </option>
-              <option value="g">g</option>
-            </select>
-          </div>
+      <div className="modal">
+        {foodDetail && (
+          <div className="modal-content">
+            <button onClick={handleClose}>Close</button>
+            <h3>{foodDetail.foodnm}</h3>
+            <div>
+              <label>+/-</label>
+              <input
+                type="number"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+              />
+            </div>
+            <div>
+              <label>단위</label>
+              <select value={unit} onChange={(e) => setUnit(e.target.value)}>
+                <option value="serv">
+                  인분({foodDetail.foodsize ? foodDetail.foodsize : "정보없음"})
+                </option>
+                <option value="g">g</option>
+              </select>
+            </div>
 
-          <div>
-            <label>일정</label>
-            <select
-              value={mealType}
-              onChange={(e) => setMealType(e.target.value)}
-            >
-              <option value="breakfast">아침식사</option>
-              <option value="lunch">점심식사</option>
-              <option value="dinner">저녁식사</option>
-              <option value="snack">간식</option>
-            </select>
+            <div>
+              <label>일정</label>
+              <select
+                value={mealType}
+                onChange={(e) => setMealType(e.target.value)}
+              >
+                <option value="breakfast">아침식사</option>
+                <option value="lunch">점심식사</option>
+                <option value="dinner">저녁식사</option>
+                <option value="snack">간식</option>
+              </select>
+            </div>
+            <button onClick={handleSave}>저장</button>
+            <button onClick={handleDelete}>삭제</button>
+            <h4>영양정보</h4>
+            <div>
+              <p>서빙 사이즈: {serving}g</p>
+              {Object.entries(nutrients).map(([key, value]) => (
+                <p key={key}>
+                  {nutrientLabels[key]}: {value}
+                </p>
+              ))}
+            </div>
           </div>
-          <button onClick={handleSave}>저장</button>
-          <button onClick={handleDelete}>삭제</button>
-          <h4>영양정보</h4>
-          <div>
-            <p>서빙 사이즈: {serving}g</p>
-            {Object.entries(nutrients).map(([key, value]) => (
-              <p key={key}>
-                {nutrientLabels[key]}: {value}
-              </p>
-            ))}
-          </div>
-        </>
-      )}
+        )}
+      </div>
     </div>
   );
 }
