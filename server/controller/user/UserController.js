@@ -41,7 +41,7 @@ const login = async (req, res) => {
          },
       );
 
-      res.cookie('token', token, { httpOnly: true });
+      res.cookie('token', token, { httpOnly: false });
 
       res.status(StatusCodes.OK).json({ message: '로그인 성공', user });
    } catch (error) {
