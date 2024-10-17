@@ -15,7 +15,14 @@ const food = require('./route/food/index');
 const user = require('./route/user/user');
 const report = require('./route/report/index');
 
-app.use(cors());
+// 모든 출처와 메소드를 허용하는 CORS 미들웨어 설정
+app.use(cors({
+   origin : 'http://localhost:3001',
+   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+   allowedHeaders: ['Content-Type', 'Authorization'],
+   credentials: true
+}));
+
 app.use(express.json());
 app.use('/processedFood', processedFood);
 app.use('/food', food);

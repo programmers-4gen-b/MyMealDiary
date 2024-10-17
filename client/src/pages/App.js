@@ -8,16 +8,37 @@ import AddFood from "./AddFood";
 import FoodDetail from "./FoodModal";
 import Login from "./Login";
 import SignUp from "./SignUp";
+import ProtectedRoute from './ProtectedRoute';
 
 const App = () => {
-  return (
+    return (
     <Router>
       <Routes>
-        <Route path="/" element={<Diary />} />
-        <Route path="/goal" element={<Goal />} />
-        <Route path="/report" element={<Report />} />   
-        <Route path="/addFood" element={<AddFood />} />
-        <Route path="/foodDetail" element={<FoodDetail />} />
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Diary />
+          </ProtectedRoute>
+        } />
+        <Route path="/goal" element={
+          <ProtectedRoute>
+            <Goal />
+          </ProtectedRoute>
+        } />
+        <Route path="/report" element={
+          <ProtectedRoute>
+            <Report />
+          </ProtectedRoute>
+        } />
+        <Route path="/addFood" element={
+          <ProtectedRoute>
+            <AddFood />
+          </ProtectedRoute>
+        } />
+        <Route path="/foodDetail" element={
+          <ProtectedRoute>
+            <FoodDetail />
+          </ProtectedRoute>
+        } />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>

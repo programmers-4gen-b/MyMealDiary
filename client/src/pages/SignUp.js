@@ -1,12 +1,15 @@
 import "../css/common.css"
+import "../css/Login&Signup.css"
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const SignUp = () => {
     const navigate = useNavigate();
     const [email,setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const navigateToDiary = () => {
         navigate('/');
@@ -24,19 +27,35 @@ const SignUp = () => {
         navigate('/login');
     }
 
-    const handleSignup = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
-        if (password !== confirmPassword) {
-            alert ("비밀번호가 일치하지 않습니다.")
-            return;
+        setLoading(true);
+
+        try{
+            if (password !== confirmPassword) {
+                alert ("비밀번호가 일치하지 않습니다.")
+                return;
+            }
+
+            const response = await axios.post('http://localhost:3000/user/register',{
+                user_name : email,
+                password : password
+            });
+            
+            alert(response.data.message);
+            navigate('/login');
+        } catch(err){
+            const errorMessage = err.response.data.message;
+            alert(errorMessage);
+        } finally{
+            setLoading(false);
         }
-        console.log('회원가입',{email,password});
-    }
+    };
 
     return (
         <div className = "app-container">
             <h2>Sign-Up</h2>
-            <form onSubmit={handleSignup}>
+            <form onSubmit={handleRegister}>
                 <div>
                     <label htmlFor = "email">이메일</label>
                     <input
@@ -68,8 +87,9 @@ const SignUp = () => {
                     />
                 </div>
                 <br />
-                <button type="submit" className="sign-up-button">회원가입</button>
+                <button type="submit" className="sign-up-button" disabled={loading}>회원가입</button>
             </form>
+
             <div className="button-container">
                 <button className="bottom-button" onClick={navigateToDiary}>다이어리</button>
                 <button className="bottom-button" onClick={navigateToReport}>리포트</button>
