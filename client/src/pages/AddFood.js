@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import FoodModal from "./FoodModal.js";
 import { useNavigate, useLocation } from "react-router-dom";
 
-function AddFood() {
+function AddFood({userId}) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,7 +36,7 @@ function AddFood() {
   const handleSearchProcessed = () => {
     if (query) {
       fetch(
-        `http://localhost:${process.env.REACT_APP_PORT}/processedFood/list?foodNm=${query}`
+        `http://localhost:${process.env.REACT_APP_SERVER_PORT}/processedFood/list?foodNm=${query}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -60,7 +60,7 @@ function AddFood() {
   const handleSerchFood = () => {
     if (query) {
       fetch(
-        `http://localhost:${process.env.REACT_APP_PORT}/food/list?foodNm=${query}`
+        `http://localhost:${process.env.REACT_APP_SERVER_PORT}/food/list?foodNm=${query}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -138,7 +138,7 @@ function AddFood() {
         content={selectedFood}
         defaultMealType={meal_type}
         mealDate={meal_date}
-        userId={user_id}
+        userId={userId}
       />
     </div>
   );

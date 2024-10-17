@@ -37,7 +37,7 @@ const SignUp = () => {
                 return;
             }
 
-            const response = await axios.post('http://localhost:3000/user/register',{
+            const response = await axios.post(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/user/register`,{
                 user_name : email,
                 password : password
             });
@@ -89,13 +89,6 @@ const SignUp = () => {
                 <br />
                 <button type="submit" className="sign-up-button" disabled={loading}>회원가입</button>
             </form>
-
-            <div className="button-container">
-                <button className="bottom-button" onClick={navigateToDiary}>다이어리</button>
-                <button className="bottom-button" onClick={navigateToReport}>리포트</button>
-                <button className="bottom-button" onClick={navigateToGoal}>목표</button>
-                <button className="bottom-button" onClick={navigateToLogin}>로그인</button>
-            </div>
         </div>
     );
 }

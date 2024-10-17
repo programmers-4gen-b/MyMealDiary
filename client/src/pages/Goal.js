@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import GenderSelection from '../component/GenderSelection'
 import BmrCalculator from '../component/BmrCalculator';
 
-const Goal = () => {
+const Goal = ({userId}) => {
     const navigate = useNavigate();
 
     const navigateToDiary = () => {
@@ -59,6 +59,11 @@ const Goal = () => {
             ...prevOptions, [field]: !prevOptions[field]
         }));
     };
+
+  const handleLogout = () => {
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    navigate('/login');
+  };
 
     const getExerciseGradeText = (value) => {
         switch (value) {
@@ -165,7 +170,7 @@ const Goal = () => {
                 <button className="bottom-button" onClick={navigateToDiary}>다이어리</button>
                 <button className="bottom-button" onClick={navigateToReport}>리포트</button>
                 <button className="bottom-button" onClick={navigateToGoal}>목표</button>
-                <button className="bottom-button" onClick={navigateToLogin}>로그인</button>
+                <button className="bottom-button" onClick={handleLogout}>로그아웃</button>
             </div>
         </div>
     );

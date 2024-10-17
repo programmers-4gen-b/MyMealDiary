@@ -58,7 +58,7 @@ function BmrCalculator( {formData} ) {
       };
   
       try {
-        const response = await axios.put('http://localhost:4545/user/calorie',dataToSave);
+        const response = await axios.put(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/user/calorie`,dataToSave);
         console.log('성공', response.data);
         alert('저장에 성공했습니다!');
       } catch (error) {

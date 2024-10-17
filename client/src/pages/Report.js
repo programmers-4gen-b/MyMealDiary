@@ -9,7 +9,7 @@ import Calendar from 'react-calendar';
 import PlaceholderInfo from '../component/PlaceholderInfo';
 import axios from 'axios';
 
-const Report = () => {
+const Report = ({userId}) => {
     const navigate = useNavigate();
     const [showCalendar, setShowCalendar] = useState(false); 
     const [date, setDate] = useState(new Date());
@@ -57,13 +57,18 @@ const Report = () => {
         await fetchAverageCalories();
     }
 
+    const handleLogout = () => {
+        document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+        navigate('/login');
+    };
+
     const fetchData = async (selectedDate) => {
         try {
             const formattedDate = selectedDate.toLocaleDateString('en-CA');
 
-            const response = await axios.get('http://localhost:4545/report/dayLog', {
+            const response = await axios.get(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/report/dayLog`, {
                 params: {
-                    user_id: 7,
+                    user_id: userId,
                     searchDate: formattedDate
                 }
             });
@@ -75,9 +80,9 @@ const Report = () => {
 
     const fetchAverageCalories = async () => {
         try {
-            const response = await axios.get('http://localhost:4545/user/calorie', {
+            const response = await axios.get(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/user/calorie`, {
                 params: {
-                    user_id : 7
+                    user_id : userId
                 }
             });
             console.log(response)
@@ -91,7 +96,7 @@ const Report = () => {
         try {            
             const formattedDate = selectedDate.toLocaleDateString('en-CA');
 
-            const response = await axios.get('http://localhost:4545/report/periodLogs',{
+            const response = await axios.get(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/report/periodLogs`,{
                 params : {
                     user_id : 7,
                     startDate : formattedDate,
@@ -141,7 +146,7 @@ const Report = () => {
                 <button className="bottom-button" onClick={navigateToDiary}>다이어리</button>
                 <button className="bottom-button" onClick={navigateToReport}>리포트</button>
                 <button className="bottom-button" onClick={navigateToGoal}>목표</button>
-                <button className="bottom-button" onClick={navigateToLogin}>로그인</button>
+                <button className="bottom-button" onClick={handleLogout}>로그아웃</button>
             </div>
         </div>
     );

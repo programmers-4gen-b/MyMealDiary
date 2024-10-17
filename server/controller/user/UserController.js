@@ -31,15 +31,16 @@ const login = async (req, res) => {
       }
 
       const token = jwt.sign(
-         {
-            user_name: user.user_name,
-         },
-         process.env.PRIVATE_KEY,
-         {
-            expiresIn: '30m',
-            issuer: user_name,
-         },
-      );
+            {
+               id: user.id,
+               user_name: user.user_name
+            },
+            process.env.PRIVATE_KEY,
+            {
+               expiresIn: '30m',
+               issuer: user_name,
+            },
+         );
 
       res.cookie('token', token, { httpOnly: false });
 

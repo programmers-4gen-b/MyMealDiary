@@ -6,8 +6,8 @@ dotenv.config();
 
 const cors = require('cors');
 
-app.listen(process.env.PORT, () => {
-   console.log(`Server on port number : ${process.env.PORT}.`);
+app.listen(process.env.SERVER_PORT, () => {
+   console.log(`Server on port number : ${process.env.SERVER_PORT}.`);
 });
 
 const processedFood = require('./route/processedFood/processedFood');
@@ -17,7 +17,7 @@ const report = require('./route/report/index');
 
 // 모든 출처와 메소드를 허용하는 CORS 미들웨어 설정
 app.use(cors({
-   origin : 'http://localhost:3001',
+   origin : 'http://localhost:3000',
    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
    allowedHeaders: ['Content-Type', 'Authorization'],
    credentials: true

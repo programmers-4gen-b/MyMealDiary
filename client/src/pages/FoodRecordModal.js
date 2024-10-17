@@ -40,7 +40,7 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
   useEffect(() => {
     if (isOpen && logId) {
       fetch(
-        `http://localhost:${process.env.REACT_APP_PORT}/processedFood/getFood/${logId}`
+        `http://localhost:${process.env.REACT_APP_SERVER_PORT}/processedFood/getFood/${logId}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -56,7 +56,7 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
   useEffect(() => {
     if (mealLog && mealLog.food_category == "음식") {
       fetch(
-        `http://localhost:${process.env.REACT_APP_PORT}/food/list/detail?foodNm=${mealLog.food_name}&foodcd=${mealLog.foodcd}`
+        `http://localhost:${process.env.REACT_APP_SERVER_PORT}/food/list/detail?foodNm=${mealLog.food_name}&foodcd=${mealLog.foodcd}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -65,7 +65,7 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
         .catch((err) => console.error(err));
     } else if (mealLog && mealLog.food_category == "가공식품") {
       fetch(
-        `http://localhost:${process.env.REACT_APP_PORT}/processedFood/list/detail?foodNm=${mealLog.food_name}&foodcd=${mealLog.foodcd}`
+        `http://localhost:${process.env.REACT_APP_SERVER_PORT}/processedFood/list/detail?foodNm=${mealLog.food_name}&foodcd=${mealLog.foodcd}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -135,7 +135,7 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
     };
 
     fetch(
-      `http://localhost:${process.env.REACT_APP_PORT}/processedFood/update/${logId}`,
+      `http://localhost:${process.env.REACT_APP_SERVER_PORT}/processedFood/update/${logId}`,
       {
         method: "PUT",
         headers: {
@@ -162,7 +162,7 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
       id: logId,
     };
     fetch(
-      `http://localhost:${process.env.REACT_APP_PORT}/processedFood/delete`,
+      `http://localhost:${process.env.REACT_APP_SERVER_PORT}/processedFood/delete`,
       {
         method: "DELETE",
         headers: {

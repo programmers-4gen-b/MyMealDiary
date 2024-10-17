@@ -46,7 +46,7 @@ function FoodModal({
   useEffect(() => {
     if (isOpen && defaultMealType === "snack") {
       fetch(
-        `http://localhost:${process.env.REACT_APP_PORT}/processedFood/list/detail?foodNm=${content.foodnm}&foodcd=${content.foodcd}`
+        `http://localhost:${process.env.REACT_APP_SERVER_PORT}/processedFood/list/detail?foodNm=${content.foodnm}&foodcd=${content.foodcd}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -55,7 +55,7 @@ function FoodModal({
         .catch((err) => console.error(err));
     } else if (isOpen && !(defaultMealType === "snack")) {
       fetch(
-        `http://localhost:${process.env.REACT_APP_PORT}/food/list/detail?foodNm=${content.foodnm}&foodcd=${content.foodcd}`
+        `http://localhost:${process.env.REACT_APP_SERVER_PORT}/food/list/detail?foodNm=${content.foodnm}&foodcd=${content.foodcd}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -124,7 +124,7 @@ function FoodModal({
       foodcd: foodDetail.foodcd,
     };
 
-    fetch(`http://localhost:${process.env.REACT_APP_PORT}/processedFood`, {
+    fetch(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/processedFood`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

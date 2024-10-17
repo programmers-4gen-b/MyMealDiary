@@ -1,12 +1,13 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import useAuth from './useAuth';
+import { useUser } from './UserContext';
 
 const ProtectedRoute = ({ children }) => {
     const { isLoggedIn } = useAuth();
-    console.log('protected 단' , isLoggedIn);
+    const { userId } = useUser();
 
-    return isLoggedIn ? children : <Navigate to="/login" />;
+    return isLoggedIn ? React.cloneElement(children, { userId }) : <Navigate to="/login" />;
 };
 
 export default ProtectedRoute;

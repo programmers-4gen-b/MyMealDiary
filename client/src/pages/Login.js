@@ -29,12 +29,13 @@ const Login = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.post('http://localhost:3000/user/login', {
+            const response = await axios.post(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/user/login`, {
                 user_name: email,
                 password: password
             }, { withCredentials: true });
 
             alert(response.data.message);
+
             navigate('/');
         } catch (err) {
             const errorMessage = err.response.data.message;
@@ -43,6 +44,7 @@ const Login = () => {
             setLoading(false);
         }
     };
+    
     return (
         <div>
             <div className="app-container">
@@ -73,13 +75,6 @@ const Login = () => {
                     <button type="button" className="sign-up-button"
                         onClick={() => navigate('/signup')}>회원가입</button>
                 </form>
-
-                <div className="button-container">
-                    <button className="bottom-button" onClick={navigateToDiary}>다이어리</button>
-                    <button className="bottom-button" onClick={navigateToReport}>리포트</button>
-                    <button className="bottom-button" onClick={navigateToGoal}>목표</button>
-                    <button className="bottom-button" onClick={navigateToLogin}>로그인</button>
-                </div>
             </div>
         </div>
     )

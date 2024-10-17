@@ -2,13 +2,13 @@ import "../css/common.css";
 import "../css/Diary.css";
 import "../css/CalendarPage.css";
 import "react-calendar/dist/Calendar.css";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useNavigate , useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import axios from "axios";
 import FoodRecordModal from "./FoodRecordModal";
 
-const Diary = () => {
+const Diary = ({userId}) => {
   const navigate = useNavigate();
 
   const navigateToDiary = () => {
@@ -86,12 +86,17 @@ const Diary = () => {
     setDate(newDate);
   };
 
+  const handleLogout = () => {
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    navigate('/login');
+  };
+
   useEffect(() => {
-    const url = `http://localhost:${process.env.REACT_APP_PORT}/processedFood/getFood/all`;
+    const url = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/processedFood/getFood/all`;
     axios
       .get(url, {
         params: {
-          user_id: 7,
+          user_id: userId,
           meal_date: formatDate(date),
         },
       })
@@ -115,11 +120,11 @@ const Diary = () => {
   }, [date]);
 
   useEffect(() => {
-    const url = `http://localhost:${process.env.REACT_APP_PORT}/user/calorie`;
+    const url = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/user/calorie`;
     axios
       .get(url, {
         params: {
-          user_id: 11,
+          user_id: userId,
         },
       })
       .then((response) => {
@@ -192,7 +197,7 @@ const Diary = () => {
         {mealTypes.map((mealType, typeIndex) => {
           const filteredMeals = data
             ? data.filter((item) => item.meal_type === mealType)
-            : []; // meal_type을 기준으로 필터링
+            : [];
 
           return (
             <div className="meal-option-container" key={typeIndex}>
@@ -229,7 +234,7 @@ const Diary = () => {
           isOpen={isModalOpen}
           onClose={closeModal}
           logId={logId}
-          userId={7}
+          userId={userId}
         />
       </div>
 
@@ -243,8 +248,8 @@ const Diary = () => {
         <button className="bottom-button" onClick={navigateToGoal}>
           목표
         </button>
-        <button className="bottom-button" onClick={navigateToLogin}>
-          로그인
+        <button className="bottom-button" onClick={handleLogout}>
+          로그아웃
         </button>
       </div>
     </div>

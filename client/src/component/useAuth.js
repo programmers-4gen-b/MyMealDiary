@@ -1,16 +1,24 @@
 import react, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useUser } from './UserContext';
 
 const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) 
         return parts.pop().split(';').shift();
-    else 
-        return null;
+    return null;
 };
 
+function parseJWT(token) {
+    const base64Url = token.split('.')[1]; 
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); 
+    const jsonPayload = decodeURIComponent(escape(window.atob(base64))); 
+    return JSON.parse(jsonPayload); 
+}
+
 const useAuth = () => {
+    const { setUserId } = useUser();
     let [isLoggedIn, setIsLoggedIn] = useState('false');
     const navigate = useNavigate();
 
@@ -19,28 +27,22 @@ const useAuth = () => {
 
         if (token) {
             setIsLoggedIn('true');
-            console.log('토큰이 존재합니다. 로그인 상태로 변경합니다.');
+            const decodedToken = parseJWT(token);
+            setUserId(decodedToken.id);
+            
         } else {
             setIsLoggedIn('false');
-            console.log('토큰이 존재하지 않습니다. 로그인 화면으로 이동합니다.');
             navigate('/login');
         }
 
-        // setIsLoggedIn(!!token);
-
-        // if (!token) {
-        //     console.log('로그인 화면 콜백');
-        //     navigate('/login');
-        // }
-
-        console.log('현재 쿠키:', document.cookie);
-        console.log('token:', token);
-        console.log('isLoggedIn:', isLoggedIn);
-    }, [navigate]);
+        // console.log('현재 쿠키:', document.cookie);
+        // console.log('token:', token);
+        // console.log('isLoggedIn:', isLoggedIn);
+    }, [navigate, setUserId]);
 
     useEffect(() => {
         console.log('isLoggedIn 상태가 변경되었습니다:', isLoggedIn);
-    }, [isLoggedIn]); // isLoggedIn의 상태가 변경될 때마다 로그 출력
+    }, [isLoggedIn]);
     
     return { isLoggedIn };
 };
