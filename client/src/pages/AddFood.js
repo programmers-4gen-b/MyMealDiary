@@ -2,7 +2,7 @@ import "../css/common.css";
 import React from "react";
 import { useState, useEffect } from "react";
 import FoodModal from "./FoodModal.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation} from "react-router-dom";
 
 //mealType 필요
 function AddFood() {

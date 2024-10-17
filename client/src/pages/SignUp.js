@@ -1,6 +1,7 @@
 import "../css/common.css"
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -24,13 +25,32 @@ const SignUp = () => {
         navigate('/login');
     }
 
-    const handleSignup = (e) => {
+    const handleSignup = async (e) => {
         e.preventDefault();
+        
         if (password !== confirmPassword) {
-            alert ("비밀번호가 일치하지 않습니다.")
+            alert("비밀번호가 일치하지 않습니다.");
             return;
         }
-        console.log('회원가입',{email,password});
+
+        try {
+            // 회원가입 API 호출
+            const response = await axios.post('http://localhost:4545/user/register', {
+                user_name: email, 
+                password: password
+            });
+
+            
+            alert(response.data.message); 
+            navigate('/login'); 
+
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.message); // 
+            } else {
+                alert('회원가입 중 오류가 발생했습니다.'); 
+            }
+        }
     }
 
     return (
