@@ -19,6 +19,13 @@ const Report = () => {
     const [error, setError] = useState(null);
     const { userId } = useUser();
 
+    useEffect(() => {
+        const savedDate = localStorage.getItem('selectedDate');
+        if (savedDate) {
+            setDate(new Date(savedDate));  
+        }
+    }, []);
+
     const data = {
         "average_calorie": averageCalorie,
         "consumedCalories": consumedCalorie,
@@ -42,10 +49,6 @@ const Report = () => {
         navigate('/goal');
     }
 
-    const navigateToLogin = () => {
-        navigate('/login');
-    }
-
     const toggleCalendar = () => {
         setShowCalendar(!showCalendar); 
     }
@@ -53,6 +56,7 @@ const Report = () => {
     const handleDateClick = async (value) => {
         setDate(value); 
         setShowCalendar(false);
+        localStorage.setItem('selectedDate',value);
         await fetchData(value);
         await fetchNutrients(value);
         await fetchAverageCalories();
@@ -64,6 +68,7 @@ const Report = () => {
     };
 
     const fetchData = async (selectedDate) => {
+        console.log('userId:', userId);
         try {
             const formattedDate = selectedDate.toLocaleDateString('en-CA');
 
@@ -94,6 +99,7 @@ const Report = () => {
     }
     
     const fetchNutrients = async (selectedDate)=> {
+        console.log('userId:', userId);
         try {            
             const formattedDate = selectedDate.toLocaleDateString('en-CA');
 
@@ -109,6 +115,14 @@ const Report = () => {
             setError('영양소 데이터를 가져오는 중 오류가 발생했습니다.');
         }
     };
+
+    useEffect(() => {
+        if (userId) {
+            fetchData(date);  
+            fetchNutrients(date); 
+            fetchAverageCalories(); 
+        }
+    }, [userId, date]);
 
     return (
         <div className="app-container">
