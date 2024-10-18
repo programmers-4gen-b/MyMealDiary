@@ -1,8 +1,7 @@
 import "../css/common.css";
 import "../css/Diary.css";
-import "../css/CalendarPage.css";
 import "react-calendar/dist/Calendar.css";
-import { useNavigate , useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import axios from "axios";
@@ -27,10 +26,7 @@ const Diary = ({userId}) => {
     navigate("/addFood", {
       state: { user_id: user_id, meal_date: meal_date, meal_type: meal_type },
     });
-  };
-
-  const navigateToLogin = () => {
-    navigate("/login");
+    setRefreshTrigger(!refreshTrigger);
   };
 
   const [data, setData] = useState(null);
@@ -40,6 +36,7 @@ const Diary = ({userId}) => {
   const [consumedCalories, setConsumedCalories] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [logId, setLogId] = useState(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
   const mealTypes = ["morning", "lunch", "dinner", "snack"];
   const weekDays = [
     { day: "monday", label: "월" },
@@ -112,12 +109,12 @@ const Diary = ({userId}) => {
           0
         );
         setData(filteredData);
-        setConsumedCalories(totalConsumedCalories);
+        setConsumedCalories(totalConsumedCalories.toFixed(1));
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, [date]);
+  }, [date, refreshTrigger]);
 
   useEffect(() => {
     const url = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/user/calorie`;
@@ -128,8 +125,11 @@ const Diary = ({userId}) => {
         },
       })
       .then((response) => {
+        if(response.data.average_calorie === 0){
+          return setRemainingCalories('아직 목표로 설정한 값이 없습니다.')
+        }
         const averageCalorie = Number(response.data.average_calorie);
-        setRemainingCalories(averageCalorie - consumedCalories);
+        setRemainingCalories((averageCalorie - consumedCalories).toFixed(1));
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -139,6 +139,7 @@ const Diary = ({userId}) => {
   const handleItemClick = (id) => {
     setLogId(id);
   };
+
   useEffect(() => {
     if (logId) {
       setIsModalOpen(true);
@@ -146,7 +147,6 @@ const Diary = ({userId}) => {
   }, [logId]);
 
   useEffect(() => {
-    //모달창 뜨면 스크롤방지
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -161,6 +161,8 @@ const Diary = ({userId}) => {
   const closeModal = () => {
     setIsModalOpen(false);
     setLogId(null);
+
+    setRefreshTrigger(!refreshTrigger);
   };
 
   return (
@@ -200,7 +202,7 @@ const Diary = ({userId}) => {
 
       <div className="meal-calorie">
         <p>
-          {formatDate(date)} / {formatDate(date, 1)}
+          {formatDate(date)}
         </p>
         <p>남은 칼로리: {remainingCalories}</p>
         <p>섭취한 칼로리: {consumedCalories}</p>
@@ -221,7 +223,7 @@ const Diary = ({userId}) => {
                   {mealType === "dinner" && "저녁식사"}
                   {mealType === "snack" && "간식/기타"}
                 </span>
-                <button onClick={() => navigateToAddFood(7, date, mealType)}>
+                <button onClick={() => navigateToAddFood(userId, date, mealType)}>
                   +
                 </button>
               </div>
