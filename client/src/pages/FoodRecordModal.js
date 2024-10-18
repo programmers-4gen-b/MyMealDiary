@@ -197,7 +197,7 @@ function FoodRecordModal({ isOpen, onClose, logId, userId }) {
         {foodDetail && (
           <div className="modal-content">
             <button onClick={handleClose} className="modal-close-button">
-              Close
+              닫기
             </button>
             <h3>{foodDetail.foodnm}</h3>
             <div className="input-group">

@@ -109,7 +109,7 @@ const Goal = ({userId}) => {
 
     return (
         <div className="app-container">
-            <h1>Goal Page</h1>
+            <h1>My Diet Goal</h1>
 
             <div className="input-body">
                 <span>나이 : </span>
@@ -195,11 +195,22 @@ const Goal = ({userId}) => {
 
             <BmrCalculator formData={formData} />
             <div className="button-container">
-                <button className="bottom-button" onClick={navigateToDiary}>다이어리</button>
-                <button className="bottom-button" onClick={navigateToReport}>리포트</button>
-                <button className="bottom-button" onClick={navigateToGoal}>목표</button>
-                <button className="bottom-button" onClick={handleLogout}>로그아웃</button>
+                <div className="center-buttons">
+                    <button className="bottom-button" onClick={navigateToDiary}>
+                        다이어리
+                    </button>
+                    <button className="bottom-button" onClick={navigateToReport}>
+                        리포트
+                    </button>
+                    <button className="bottom-button" onClick={navigateToGoal}>
+                        목표
+                    </button>
+                </div>
+                <button className="logout-button" onClick={handleLogout}>
+                    로그아웃
+                </button>
             </div>
+            
         </div>
     );
 }

@@ -108,7 +108,7 @@ function AddFood() {
   return (
     <div className="app-container">
       <button onClick={handleClose} className="close-button">
-        Close
+        닫기
       </button>
       <input
         type="text"

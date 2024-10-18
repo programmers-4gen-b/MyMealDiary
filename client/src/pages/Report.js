@@ -126,7 +126,7 @@ const Report = () => {
 
     return (
         <div className="app-container">
-            <h1>Report Page</h1>
+            <h1>My Daily Report</h1>
 
             <button onClick={toggleCalendar} className="calendar-button">
                 {showCalendar ? '달력 숨기기' : '달력 보기'}
@@ -146,15 +146,26 @@ const Report = () => {
             <div style={{ marginTop: '20px' }}>
                 <p>선택된 날짜: {date.toDateString()}</p>
             </div>
-            
+
             <PlaceholderInfo date={date.toDateString()} data={data} />
 
             <div className="button-container">
-                <button className="bottom-button" onClick={navigateToDiary}>다이어리</button>
-                <button className="bottom-button" onClick={navigateToReport}>리포트</button>
-                <button className="bottom-button" onClick={navigateToGoal}>목표</button>
-                <button className="bottom-button" onClick={handleLogout}>로그아웃</button>
+                <div className="center-buttons">
+                    <button className="bottom-button" onClick={navigateToDiary}>
+                        다이어리
+                    </button>
+                    <button className="bottom-button" onClick={navigateToReport}>
+                        리포트
+                    </button>
+                    <button className="bottom-button" onClick={navigateToGoal}>
+                        목표
+                    </button>
+                </div>
+                <button className="logout-button" onClick={handleLogout}>
+                    로그아웃
+                </button>
             </div>
+
         </div>
     );
 }

@@ -201,9 +201,7 @@ const Diary = ({userId}) => {
       )}
 
       <div className="meal-calorie">
-        <p>
-          {formatDate(date)}
-        </p>
+        <p>Day : {formatDate(date)}</p><br></br>
         <p>남은 칼로리: {remainingCalories}</p>
         <p>섭취한 칼로리: {consumedCalories}</p>
       </div>
@@ -254,19 +252,22 @@ const Diary = ({userId}) => {
       </div>
 
       <div className="button-container">
-        <button className="bottom-button" onClick={navigateToDiary}>
-          다이어리
-        </button>
-        <button className="bottom-button" onClick={navigateToReport}>
-          리포트
-        </button>
-        <button className="bottom-button" onClick={navigateToGoal}>
-          목표
-        </button>
-        <button className="bottom-button" onClick={handleLogout}>
+        <div className="center-buttons">
+          <button className="bottom-button" onClick={navigateToDiary}>
+            다이어리
+          </button>
+          <button className="bottom-button" onClick={navigateToReport}>
+            리포트
+          </button>
+          <button className="bottom-button" onClick={navigateToGoal}>
+            목표
+          </button>
+        </div>
+        <button className="logout-button" onClick={handleLogout}>
           로그아웃
         </button>
       </div>
+
     </div>
   );
 };

@@ -10,6 +10,10 @@
     border-radius: 8px;
     padding: 20px;
 }
+p{
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
 
 .week-container{
     display: flex;
@@ -59,7 +63,7 @@
     font-size: 15px;
     position: absolute;
     top: 150px;
-    left: 15%;
+    left: 16%;
     right: 15%;
     z-index: 2;
 }
@@ -67,11 +71,11 @@
 .meal-selection {
     position: absolute;
     z-index: 3;
-    top: 270px;
+    top: 250px;
     width: 80%;
     display: flex;
     flex-direction: column;
-    max-height: calc(80vh - 330px);
+    max-height: calc(80vh - 290px);
     overflow-y: auto;
 }
 
@@ -83,9 +87,9 @@
     padding: 5px;
     background-color: #e0e0e0;
     border: none;
-    border-radius: 8px; /* 약간 더 둥글게 변경 */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
-    transition: background-color 0.3s ease; /* 부드러운 전환 효과 */
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease; 
 }
 
 .meal-option{
