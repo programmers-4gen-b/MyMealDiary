@@ -144,7 +144,9 @@ const Report = () => {
             )}
 
             <div style={{ marginTop: '20px' }}>
-                <p>선택된 날짜: {date.toDateString()}</p>
+            <p>선택된 날짜: {new Date(
+                date.getTime() - (date.getTimezoneOffset() * 60000)
+                ).toISOString().split('T')[0]}</p>
             </div>
 
             <PlaceholderInfo date={date.toDateString()} data={data} />
