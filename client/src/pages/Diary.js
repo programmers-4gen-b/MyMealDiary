@@ -114,7 +114,27 @@ const Diary = ({userId}) => {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, [date, refreshTrigger]);
+  }, [userId,date, refreshTrigger]);
+
+  useEffect(() => {
+    // 초기 데이터 로드 및 상태 업데이트
+    const loadData = async () => {
+      const url = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/processedFood/getFood/all`;
+      try {
+        const response = await axios.get(url, {
+          params: {
+            user_id: userId,
+            meal_date: formatDate(date),
+          },
+        });
+        // 데이터 처리
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+  
+    loadData();
+  }, []); 
 
   useEffect(() => {
     const url = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/user/calorie`;
